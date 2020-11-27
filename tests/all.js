@@ -1,8 +1,8 @@
 const test = require('tape')
-const SExpression = require('../index')
+const SExpr = require('../index')
 
 test('flat list', function (t) {
-  const S = new SExpression()
+  const S = new SExpr()
   t.plan(4)
   t.deepEqual(S.parse('(1 2 3)'), [1, 2, 3])
   t.deepEqual(S.serialize([1, 2, 3]), '(1 2 3)')
@@ -13,7 +13,7 @@ test('flat list', function (t) {
 
 
 test('type checks', function (t) {
-  const S = new SExpression()
+  const S = new SExpr()
   const node = S.parse('(a 1 "c d e" true #t false #f null #nil ())')
   t.plan(5)
   t.true(S.isIdentifier(node[0]))

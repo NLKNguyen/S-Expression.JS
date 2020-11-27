@@ -1,6 +1,6 @@
 'use strict'
 
-class SExpression {
+class SExpr {
   truthy = ['true', '#t']
   falsy = ['false', '#f']
   nully = ['null', '#nil']
@@ -34,6 +34,34 @@ class SExpression {
     let s = ''
     for (let i = 0, e = L.length; i < e; i++) s += (s ? ' ' : '') + L[i]
     return '(' + s + ')'
+  }
+
+  identifier (id) {
+    return String(id)
+  }
+
+  number (v) {
+    return Number(v)
+  }
+
+  null () {
+    return `${this.nully[0]}`
+  }
+
+  string (str) {
+    return `"${str}"`
+  }
+
+  boolean (v) {
+    if (v) {
+      return `${this.truthy[0]}`
+    } else {
+      return `${this.falsy[0]}`
+    }
+  }
+
+  expression () { // TODO: take vargs
+    return []
   }
 
   isIdentifier (e) {
@@ -96,7 +124,7 @@ class SExpression {
     return typeof e === 'string' && e[0] === '"'
   }
 
-  stringContent (e) {
+  content (e) {
     return e.slice(1, a.length - 1)
   }
 
@@ -129,7 +157,11 @@ class SExpression {
   }
 }
 
-// const S = new SExpression()
+// const S = new SExpr()
 
+// const node = S.expression()
+// node.push(S.identifier('add'), S.number(5), S.expression( S.identifier('event'), S.string('CASE')))) )
+// console.log(S.null())
+// console.log(S.boolean(true))
 // console.log(S.parse("(a-b true () '('1 2' . 3))"))
-module.exports = SExpression
+module.exports = SExpr

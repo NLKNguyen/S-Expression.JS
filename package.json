@@ -1,7 +1,7 @@
 {
   "name": "js-sexpr",
   "version": "1.0.0",
-  "description": "Plain (Symbolic) S-Expression Serializer/Deserializer in browsers and Node.js",
+  "description": "Plain S-Expression Parser, Serializer, and Tree Walker in Browsers and Node.js",
   "main": "index.js",
   "scripts": {
     "test": "tape ./tests/all.js | tap-spec",
@@ -15,6 +15,8 @@
     "sexpression",
     "sexpr",
     "parser",
+    "tree",
+    "walker",
     "serializer",
     "deserializer",
     "scheme"
