@@ -1,0 +1,37 @@
+{
+  "name": "js-sexpr",
+  "version": "1.0.0",
+  "description": "Plain (Symbolic) S-Expression Serializer/Deserializer in browsers and Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape ./tests/all.js | tap-spec",
+    "test-browser": "browserify ./tests/all.js | tap-closer | smokestack -b chrome | tap-spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NLKNguyen/SExpression.JS.git"
+  },
+  "keywords": [
+    "sexpression",
+    "sexpr",
+    "parser",
+    "serializer",
+    "deserializer",
+    "scheme"
+  ],
+  "author": "Nikyle Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NLKNguyen/SExpression.JS/issues"
+  },
+  "homepage": "https://github.com/NLKNguyen/SExpression.JS#readme",
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "faucet": "0.0.1",
+    "smokestack": "^3.6.0",
+    "tap-closer": "^1.0.0",
+    "tap-spec": "^5.0.0",
+    "tape": "^5.0.1",
+    "wd": "^1.13.0"
+  }
+}

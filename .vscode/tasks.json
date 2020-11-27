@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "test",
+			"group": {
+				"kind": "test",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "Test",
+			"detail": "tape ./tests/all.js | tap-spec"
+		},
+		{
+			"type": "npm",
+			"script": "test-browser",
+			"problemMatcher": [],
+			"label": "Test in Browser",
+			"detail": "browserify ./tests/all.js | tap-closer | smokestack -b chrome | tap-spec"
+		}
+	]
+}
