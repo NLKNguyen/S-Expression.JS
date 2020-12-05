@@ -82,3 +82,52 @@ test('type checks', function (t) {
   t.false(S.valueOf(node[6]))
   t.false(S.isString(node[6]))
 })
+
+
+
+test('parsing', function (t) {
+  t.plan(1)
+  const S = new SExpr()
+
+  const node = S.expression()
+  node.push(
+    S.identifier('repeat'),
+    S.number(3),
+    // S.number(3),
+    S.expression(S.identifier('print'), S.string('Knock'))
+  )
+  
+  const parsed = S.parse(`(repeat 3 (print "Knock"))`)
+  
+  // console.assert(S.isEqual(node, parsed))
+  
+  console.log(node)
+  
+  // same as S.isIdentifier(node[0]) && node[0] === 'repeat'
+  if (S.isIdentifier(S.first(node), 'repeat')) {  
+    if (node.length != 3) {
+      console.error(`'repeat' expects 2 arguments: a number and an expression`)
+      return
+    }
+    if (S.isNumber(S.second(node))) {
+      const n = S.second(node) // same as node[1]
+      const e = S.third(node) // same as node[2]
+      if (S.isExpression(e)) {
+        if (S.isIdentifier(S.first(e), 'print') && S.isString(S.second(e))) {
+          for (let i = 0; i < n; ++i) {
+            console.log(S.valueOf(S.second(e))) // S.valueOf is necessary for obtaining String value
+          }
+        } else {
+          console.error(`'repeat' doesn't handle ${S.serialize(e)} expression`)
+        }
+      } else {
+        console.error(`'repeat' expects an expression to be repeated`)
+      }
+    } else {
+      console.error(`'repeat' expects a number of times to repeat an expression`)
+    }
+  }
+
+  t.pass('parse normally')
+  
+})

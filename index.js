@@ -37,34 +37,7 @@ class SExpr {
   }
 
   identifier (id) {
-    return String(id)
-  }
-
-  number (v) {
-    return Number(v)
-  }
-
-  null () {
-    return `${this.nully[0]}`
-  }
-
-  string (str) {
-    return `"${str}"`
-  }
-
-  boolean (v) {
-    if (v) {
-      return `${this.truthy[0]}`
-    } else {
-      return `${this.falsy[0]}`
-    }
-  }
-
-  expression (...exps) {
-    if (exps) {
-      return [...exps]
-    }
-    return []
+    return id
   }
 
   isIdentifier (e, id = undefined) {
@@ -108,6 +81,13 @@ class SExpr {
     return true
   }
 
+  expression (...exps) {
+    if (exps) {
+      return [...exps]
+    }
+    return []
+  }
+
   isExpression (e, s = undefined) {
     const isExpr = Array.isArray(e)
 
@@ -115,6 +95,14 @@ class SExpr {
       return isExpr && isEqual(e, s)
     }
     return isExpr
+  }
+
+  boolean (v) {
+    if (v) {
+      return `${this.truthy[0]}`
+    } else {
+      return `${this.falsy[0]}`
+    }
   }
 
   isBoolean (e, b = undefined) {
@@ -149,6 +137,10 @@ class SExpr {
     }
     return true
   }
+  
+  null () {
+    return `${this.nully[0]}`
+  }
 
   isNull (e) {
     if (typeof e == 'string' || e instanceof String) {
@@ -161,12 +153,28 @@ class SExpr {
     return false
   }
 
-  isNumber (e) {
-    return typeof e === 'number' || e instanceof Number
+  number (n) {
+    return n
   }
 
-  isString (e) {
-    return (typeof e === 'string' || e instanceof String) && e[0] === '"'
+  isNumber (e, n) {    
+    const isNum = typeof e === 'number' || e instanceof Number
+    if (n != undefined) {
+      return isNum && isEqual(e, n)
+    }
+    return isNum    
+  }
+
+  string (str) {
+    return `"${str}"`
+  }
+
+  isString (e, s) {
+    const isStr = (typeof e === 'string' || e instanceof String) && e[0] === '"'
+    if (s != undefined) {
+      return isStr && isEqual(e, s)
+    }
+    return isStr    
   }
 
   valueOf (e) {
@@ -221,49 +229,60 @@ class SExpr {
     return undefined
   }
 
-  // TODO: 4th -> 10th
+  fourth (e) {
+    if (Array.isArray(e)) {
+      return e[3]
+    }
+    return undefined
+  }
+
+  fifth (e) {
+    if (Array.isArray(e)) {
+      return e[4]
+    }
+    return undefined
+  }
+
+  sixth (e) {
+    if (Array.isArray(e)) {
+      return e[5]
+    }
+    return undefined
+  }
+
+  seventh (e) {
+    if (Array.isArray(e)) {
+      return e[6]
+    }
+    return undefined
+  }
+
+  eighth (e) {
+    if (Array.isArray(e)) {
+      return e[7]
+    }
+    return undefined
+  }
+
+  ninth (e) {
+    if (Array.isArray(e)) {
+      return e[8]
+    }
+    return undefined
+  }
+
+  tenth (e) {
+    if (Array.isArray(e)) {
+      return e[9]
+    }
+    return undefined
+  }
 
   nth (e, n) {
     if (Array.isArray(e)) {
       return e[n - 1]
     }
     return undefined
-  }
-}
-
-const S = new SExpr()
-
-const node = S.expression()
-node.push(
-  S.identifier('repeat'),
-  S.number(3),
-  S.expression(S.identifier('print'), S.string('Knock'))
-)
-
-const parsed = S.parse(`(repeat 3 (print "Knock"))`)
-
-console.assert(S.isEqual(node, parsed))
-
-console.log(node)
-
-// same as S.isIdentifier(node[0]) && node[0] === 'repeat'
-if (S.isIdentifier(S.first(node), 'repeat')) {  
-  if (S.isNumber(S.second(node))) {
-    const n = S.second(node) // same as node[1] or S.nth(node, 2)
-    const e = S.third(node) // same as node[2] or S.nth(node, 3)
-    if (S.isExpression(e)) {
-      if (S.isIdentifier(S.first(e), 'print') && S.isString(S.second(e))) {
-        for (let i = 0; i < n; ++i) {
-          console.log(S.valueOf(S.second(e))) // S.valueOf is necessary for obtaining String value
-        }
-      } else {
-        console.error(`'repeat' doesn't handle ${S.serialize(e)} expression`)
-      }
-    } else {
-      console.error(`'repeat' expects an expression to be repeated`)
-    }
-  } else {
-    console.error(`'repeat' expects a number of times to repeat an expression`)
   }
 }
 
