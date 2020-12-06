@@ -1,21 +1,46 @@
 'use strict'
+/**
+ * Class of S-Expression resolver that includes parser, tree constructors, and tree walker utilities
+ * @public
+ * @class SExpr
+ */
 class SExpr {
+  /**
+   * Public field for programmers to store arbitrary data that might be useful for parsing expressions
+   * @public
+   * @default {}
+   * @memberof SExpr
+   */
+  context = {}
+
   truthy = ['true', '#t']
   falsy = ['false', '#f']
   nully = ['null', '#nil']
 
+  /**
+   * Creates an instance of SExpr. Optional `options` input for configuring default behavior, such as how to recognize null, boolean values as it's up to the programmer to decide the syntax:
+   * ```json
+   * {
+   *  truthy: ['true', '#t'],
+   *  falsy: ['false', '#f']
+   *  nully: ['null', '#nil']
+   * }
+   * ```
+   *
+   * @param {*} [options={}]
+   * @memberof SExpr
+   */
   constructor (options = {}) {
     this.truthy = options.truthy || this.truthy
     this.falsy = options.falsy || this.falsy
     this.nully = options.nully || this.nully
   }
 
-
   /**
    * Parse a S-expression string into a JSON object representing an expression tree
-   * 
+   *
    * @param  {string} str S-expression string
-   * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression      
+   * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression
    * @memberof SExpr
    * @ref credit: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
@@ -42,7 +67,7 @@ class SExpr {
    * Serialize an expression tree into an S-expression string
    *
    * @param {*} L
-   * @return {*} 
+   * @return {*}
    * @memberof SExpr
    */
   serialize (L) {
@@ -53,7 +78,10 @@ class SExpr {
 
   /**
    * Create an identifier symbol
-   *
+   * @example
+   * const S = new SExpr()
+   * const node = S.expression(S.identifier('a'))
+   * // ['a']
    * @param {string} id
    * @return {string} symbol
    * @memberof SExpr
@@ -63,10 +91,16 @@ class SExpr {
   }
 
   /**
-   * Checks if a node is an identifier, optionally compare with a name
-   *
-   * @param {any} e a node
-   * @param {string} [id=undefined] optional id name to compare with
+   * Check if a node is an identifier, optionally compare to a given name
+   * @example
+   * const S = new SExpr()
+   * const node = S.expression(S.identifier('a'))
+   * console.log(S.isIdentifier(S.first(node)))
+   * // true
+   * console.log(S.isIdentifier(S.first(node, 'a')))
+   * // true
+   * @param {any} e a node to check
+   * @param {string} [id=undefined] optional id name to compare to
    * @return {boolean} true if it is an identifier
    * @memberof SExpr
    */
@@ -182,7 +216,7 @@ class SExpr {
     }
     return true
   }
-  
+
   null () {
     return `${this.nully[0]}`
   }
@@ -202,12 +236,12 @@ class SExpr {
     return n
   }
 
-  isNumber (e, n) {    
+  isNumber (e, n) {
     const isNum = typeof e === 'number' || e instanceof Number
     if (n != undefined) {
       return isNum && isEqual(e, n)
     }
-    return isNum    
+    return isNum
   }
 
   string (str) {
@@ -219,7 +253,7 @@ class SExpr {
     if (s != undefined) {
       return isStr && isEqual(e, s)
     }
-    return isStr    
+    return isStr
   }
 
   valueOf (e) {
