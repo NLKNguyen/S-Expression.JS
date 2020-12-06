@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "tape ./tests/all.js | tap-spec",
-    "test-browser": "browserify ./tests/all.js | tap-closer | smokestack -b chrome | tap-spec"
+    "test-browser": "browserify ./tests/all.js | tap-closer | smokestack -b chrome | tap-spec",
+    "docs-html": "documentation build index.js -f html -o docs",
+    "docs-md": "documentation build index.js -f md",
+    "docs-readme": "documentation readme index.js --section=API"
   },
   "repository": {
     "type": "git",
@@ -30,6 +33,7 @@
   "homepage": "https://github.com/NLKNguyen/SExpression.JS#readme",
   "devDependencies": {
     "browserify": "^17.0.0",
+    "documentation": "^13.1.0",
     "faucet": "0.0.1",
     "smokestack": "^3.6.0",
     "tap-closer": "^1.0.0",

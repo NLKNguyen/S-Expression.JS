@@ -10,7 +10,15 @@ class SExpr {
     this.nully = options.nully || this.nully
   }
 
-  // @ref credit: https://rosettacode.org/wiki/S-expressions#JavaScript
+
+  /**
+   * Parse a S-expression string into a JSON object representing an expression tree
+   * 
+   * @param  {string} str S-expression string
+   * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression      
+   * @memberof SExpr
+   * @ref credit: https://rosettacode.org/wiki/S-expressions#JavaScript
+   */
   parse (str) {
     const t = str.match(/\s*("[^"]*"|\(|\)|"|[^\s()"]+)/g)
     let o, c, i
@@ -30,16 +38,38 @@ class SExpr {
     return c ? undefined : eval(t.join(''))
   }
 
+  /**
+   * Serialize an expression tree into an S-expression string
+   *
+   * @param {*} L
+   * @return {*} 
+   * @memberof SExpr
+   */
   serialize (L) {
     let s = ''
     for (let i = 0, e = L.length; i < e; i++) s += (s ? ' ' : '') + L[i]
     return '(' + s + ')'
   }
 
+  /**
+   * Create an identifier symbol
+   *
+   * @param {string} id
+   * @return {string} symbol
+   * @memberof SExpr
+   */
   identifier (id) {
     return id
   }
 
+  /**
+   * Checks if a node is an identifier, optionally compare with a name
+   *
+   * @param {any} e a node
+   * @param {string} [id=undefined] optional id name to compare with
+   * @return {boolean} true if it is an identifier
+   * @memberof SExpr
+   */
   isIdentifier (e, id = undefined) {
     const isId =
       e &&
@@ -58,6 +88,14 @@ class SExpr {
   //   return deepEqual(a, b, { strict: true })
   // }
 
+  /**
+   * Compare whether 2 nodes are identical
+   *
+   * @param {any} a a node
+   * @param {any} b another node to compare to
+   * @return {boolean} true if they are the same
+   * @memberof SExpr
+   */
   isEqual (a, b) {
     const aArray = Array.isArray(a)
     const bArray = Array.isArray(b)
@@ -81,6 +119,13 @@ class SExpr {
     return true
   }
 
+  /**
+   * Create an expression node
+   *
+   * @param {rest} exps optional initialization list of elements
+   * @return {json} a tree node
+   * @memberof SExpr
+   */
   expression (...exps) {
     if (exps) {
       return [...exps]
