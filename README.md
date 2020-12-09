@@ -3,8 +3,7 @@
 <p align="center">
 
   <a href="https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE" target="_blank">
-    <!-- <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-green.svg" />  -->
-    <img alt="License: ISC" src="https://img.shields.io/github/license/NLKNguyen/S-Expression.JS.svg?color=blueviolet&maxAge=2592000" />
+    <img alt="License: ISC" src="https://img.shields.io/github/license/NLKNguyen/S-Expression.JS.svg?color=blueviolet" />
 
   </a>
 
@@ -13,7 +12,7 @@
   </a>
 
   <a href="https://github.com/NLKNguyen/S-Expression.JS/issues" target="_blank">
-    <img alt="Closed issues" src="https://img.shields.io/github/issues-closed-raw/NLKNguyen/S-Expression.JS.svg?maxAge=2592000" />
+    <img alt="Closed issues" src="https://img.shields.io/github/issues-closed-raw/NLKNguyen/S-Expression.JS.svg?color=yellow" />
   </a>
 
   <a href="https://www.patreon.com/Nikyle" title="Donate to this project using Patreon">
