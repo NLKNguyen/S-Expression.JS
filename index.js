@@ -1,6 +1,6 @@
 'use strict'
 /**
- * Class of S-Expression resolver that includes parser, tree constructors, and tree walker utilities
+ * Class of S-Expression resolver that includes parser, serializer, tree constructors, and tree walker utilities
  * @public
  * @class SExpr
  */
@@ -167,6 +167,14 @@ class SExpr {
     return []
   }
 
+  /**
+   * Check if a node is an expression, and optionally compare to a given expression
+   *
+   * @param {any} e a node to check whether it's an expression
+   * @param {json} [s=undefined] optional expression to compare to
+   * @return {boolean} true if it's an expression (and equals the compared expression if provided)
+   * @memberof SExpr
+   */
   isExpression (e, s = undefined) {
     const isExpr = Array.isArray(e)
 
@@ -176,6 +184,13 @@ class SExpr {
     return isExpr
   }
 
+  /**
+   * Create a boolean node with given state
+   *
+   * @param {boolean} v boolean value
+   * @return {string} a node with name corresponding to a boolean value
+   * @memberof SExpr
+   */
   boolean (v) {
     if (v) {
       return `${this.truthy[0]}`
@@ -184,6 +199,14 @@ class SExpr {
     }
   }
 
+  /**
+   * Check if a node is a boolean value, optionally compare to a given state
+   *
+   * @param {any} e a node to check whether it's a boolean
+   * @param {boolean} [b=undefined] optional state to compare to
+   * @return {boolean} true if it's a boolean (and equals the given state if provided)
+   * @memberof SExpr
+   */
   isBoolean (e, b = undefined) {
     if (typeof e === 'string' || e instanceof String) {
       for (let t of this.truthy) {
@@ -206,6 +229,13 @@ class SExpr {
     return false
   }
 
+  /**
+   * Check if a node is considered truthy. Anything but an explicit false value is truthy.
+   *
+   * @param {any} e a node to check if it's truthy
+   * @return {boolean} true if it's truthy
+   * @memberof SExpr
+   */
   isTruthy (e) {
     if (typeof e == 'string' || e instanceof String) {
       for (let f of this.falsy) {
@@ -217,10 +247,23 @@ class SExpr {
     return true
   }
 
+  /**
+   * Create a null node.
+   *
+   * @return {string} a node with name representing null value
+   * @memberof SExpr
+   */
   null () {
     return `${this.nully[0]}`
   }
 
+  /**
+   * Check if a node is null.
+   *
+   * @param {any} e a node to check if it's null
+   * @return {boolean}  true if it's null
+   * @memberof SExpr
+   */
   isNull (e) {
     if (typeof e == 'string' || e instanceof String) {
       for (let n of this.nully) {
@@ -232,10 +275,25 @@ class SExpr {
     return false
   }
 
+  /**
+   * Create a number node
+   *
+   * @param {number} n value of the new node
+   * @return {number} a node with number value
+   * @memberof SExpr
+   */
   number (n) {
     return n
   }
 
+  /**
+   * Check if a node is a number
+   *
+   * @param {any} e a node to check if it's a number, optionally compare to a given value
+   * @param {number} n an optional value to compare to
+   * @return {boolean} true if it's a number (and equals the given value if provided)
+   * @memberof SExpr
+   */
   isNumber (e, n) {
     const isNum = typeof e === 'number' || e instanceof Number
     if (n != undefined) {
@@ -244,10 +302,25 @@ class SExpr {
     return isNum
   }
 
+  /**
+   * Create a string node.
+   *
+   * @param {string} str string value of the node
+   * @return {string} a node with string value
+   * @memberof SExpr
+   */
   string (str) {
     return `"${str}"`
   }
 
+  /**
+   * Check if a node is a string, optionally compare to a given string.
+   *
+   * @param {any} e a node to check if it's a string
+   * @param {string} s optional string to compare to
+   * @return {*} true if it's a string (and equals the given string if provided)
+   * @memberof SExpr
+   */
   isString (e, s) {
     const isStr = (typeof e === 'string' || e instanceof String) && e[0] === '"'
     if (s != undefined) {
@@ -256,6 +329,13 @@ class SExpr {
     return isStr
   }
 
+  /**
+   * Get a value content of a symbol (not expression).
+   *
+   * @param {any} e a node to extract value
+   * @return {any} value
+   * @memberof SExpr
+   */
   valueOf (e) {
     if (typeof e === 'string' || e instanceof String) {
       // maybe quoted string
@@ -287,6 +367,13 @@ class SExpr {
     return e
   }
 
+  /**
+   * Get the first child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} child if exists
+   * @memberof SExpr
+   */
   first (e) {
     if (Array.isArray(e)) {
       return e[0]
@@ -294,6 +381,13 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the second child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} child if exists
+   * @memberof SExpr
+   */
   second (e) {
     if (Array.isArray(e)) {
       return e[1]
@@ -301,6 +395,13 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the third child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} child if exists
+   * @memberof SExpr
+   */
   third (e) {
     if (Array.isArray(e)) {
       return e[2]
@@ -357,6 +458,13 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the n-th child of a node. Similar to the shorthand `first`, `second`, `third`, `fourth`, `fifth` ... `tenth`, but for any location.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} child if exists
+   * @memberof SExpr
+   */
   nth (e, n) {
     if (Array.isArray(e)) {
       return e[n - 1]
