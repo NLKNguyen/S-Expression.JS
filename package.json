@@ -1,18 +1,22 @@
 {
   "name": "js-sexpr",
-  "version": "1.0.0",
-  "description": "Plain S-Expression Parser, Tree Constructor / Walker, and Serializer in Browsers and Node.js",
+  "version": "0.0.8",
+  "description": "S-Expression Parser, Serializer, and Tree Constructor / Walker Utilities in JavaScript for Browsers and Node.js",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "tape ./tests/all.js | tap-spec",
     "test-browser": "browserify ./tests/all.js | tap-closer | smokestack -b chrome | tap-spec",
-    "docs-html": "documentation build index.js -f html -o docs",
+    "docs-html": "documentation build index.js -f html --config ./documentation.yml --theme ../S-Expression.JSDOC/src/default_theme/  -o ../S-Expression.JSDOC/public",
     "docs-md": "documentation build index.js -f md",
     "docs-readme": "documentation readme index.js --section=API"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NLKNguyen/SExpression.JS.git"
+    "url": "git+https://github.com/NLKNguyen/S-Expression.JS.git"
   },
   "keywords": [
     "sexpression",
@@ -28,9 +32,9 @@
   "author": "Nikyle Nguyen",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/NLKNguyen/SExpression.JS/issues"
+    "url": "https://github.com/NLKNguyen/S-Expression.JS/issues"
   },
-  "homepage": "https://github.com/NLKNguyen/SExpression.JS#readme",
+  "homepage": "https://github.com/NLKNguyen/S-Expression.JS",
   "devDependencies": {
     "browserify": "^17.0.0",
     "documentation": "^13.1.0",

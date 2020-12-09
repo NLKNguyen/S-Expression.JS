@@ -9,7 +9,7 @@
   </a>
 
   <a href="https://github.com/NLKNguyen/S-Expression.JS/releases" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/github/release/NLKNguyen/S-Expression.JS.svg?color=green" />
+    <img alt="Release" src="https://img.shields.io/github/release/NLKNguyen/S-Expression.JS.svg?color=green" />
   </a>
 
   <a href="https://github.com/NLKNguyen/S-Expression.JS/issues" target="_blank">
@@ -35,7 +35,7 @@
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height=45 />
   </a>
 </p>
-
+ 
 S-Expression Parser, Serializer, and Tree Constructor / Walker Utilities for JavaScript in Browsers and Node.js
 
 Zero-dependencies. Tree structure as plain JSON. Ideal for custom data transfer format and making DSLs.
@@ -44,7 +44,7 @@ Zero-dependencies. Tree structure as plain JSON. Ideal for custom data transfer 
 
 <p>S-Expression is surprisingly a powerful yet very simple concept to represent both data and function with minimalist syntax. It was popularized by LISP (a classic programming language that was used heavily in AI research) in the very beginning of computer science, circa 1960, and yet S-Expression is still one of the best ideas around due to its simplicity and extensibility. It contains only lists containing symbols and nested lists, and it's totally up to the programmers to make the meanings out of those symbols and their arrangements. S-Expression is a good choice for many use cases ranging from command format, config file format, small domain-specific language to a full-blown programming language.</p>
 
-<p>S-Expression is so minimal that it resembles an abstract syntax tree, which is the underlying representation of many high-level programming languages when their syntactic sugar code is parsed through the typical language grammars. This appeals to many language designers because they can bypass the typical grammar design in forms such as BNF and instead focus on the core syntax tree to accomplish their main goals for the languages, and consequently providing a native/in-language way to manipulate the syntax tree thus enables more dynamic capability and easier metaprogramming.</p>
+<p>S-Expression is so minimal that it resembles an abstract syntax tree (AST), which is the underlying representation of many high-level programming languages when their syntactic sugar code is parsed through the typical language grammars. This appeals to many language designers because they can bypass the typical grammar design in forms such as BNF and instead focus on the core syntax tree to accomplish their main goals for the languages, and consequently providing a native/in-language way to manipulate the syntax tree thus enables more dynamic capability and easier metaprogramming.</p>
 
 <p>These are some of the reasons why there are so many popular languages based on S-Expression such as Lisp, Clojure, Scheme, Racket, and their families of languages. More recently, WebAssembly, the 4th language of the Web, also embraces S-Expression for its textual form. Once you're familiar with S-Expression and its flexibility, it becomes useful knowledge in your development toolkit and can come in handy as an obvious choice over any ad-hoc input parsing that often comes up in your career as a developer.</p>
 
@@ -56,7 +56,7 @@ Zero-dependencies. Tree structure as plain JSON. Ideal for custom data transfer 
 npm install --save js-sexpr
 ```
 
-<a href="https://www.patreon.com/Nikyle" title="Read API documentation">
+<a href="https://js-sexpr.dephony.com/" title="Read API documentation">
   <img src="https://img.shields.io/badge/API%20Documentation-HTML-blue.svg" alt="API documentation link" height=30/>
 </a>
 <p></p>
@@ -128,54 +128,69 @@ The project is [ISC License](https://github.com/NLKNguyen/S-Expression.JS/blob/m
 ### Table of Contents
 
 -   [SExpr](#sexpr)
+    -   [Parameters](#parameters)
     -   [context](#context)
     -   [parse](#parse)
-        -   [Parameters](#parameters)
-    -   [serialize](#serialize)
         -   [Parameters](#parameters-1)
-    -   [identifier](#identifier)
+    -   [serialize](#serialize)
         -   [Parameters](#parameters-2)
+    -   [identifier](#identifier)
+        -   [Parameters](#parameters-3)
         -   [Examples](#examples)
     -   [isIdentifier](#isidentifier)
-        -   [Parameters](#parameters-3)
+        -   [Parameters](#parameters-4)
         -   [Examples](#examples-1)
     -   [isEqual](#isequal)
-        -   [Parameters](#parameters-4)
-    -   [expression](#expression)
         -   [Parameters](#parameters-5)
-    -   [isExpression](#isexpression)
+    -   [expression](#expression)
         -   [Parameters](#parameters-6)
-    -   [boolean](#boolean)
+    -   [isExpression](#isexpression)
         -   [Parameters](#parameters-7)
-    -   [isBoolean](#isboolean)
+    -   [boolean](#boolean)
         -   [Parameters](#parameters-8)
-    -   [isTruthy](#istruthy)
+    -   [isBoolean](#isboolean)
         -   [Parameters](#parameters-9)
+    -   [isTruthy](#istruthy)
+        -   [Parameters](#parameters-10)
     -   [null](#null)
     -   [isNull](#isnull)
-        -   [Parameters](#parameters-10)
-    -   [number](#number)
         -   [Parameters](#parameters-11)
-    -   [isNumber](#isnumber)
+    -   [number](#number)
         -   [Parameters](#parameters-12)
-    -   [string](#string)
+    -   [isNumber](#isnumber)
         -   [Parameters](#parameters-13)
-    -   [isString](#isstring)
+    -   [string](#string)
         -   [Parameters](#parameters-14)
-    -   [valueOf](#valueof)
+    -   [isString](#isstring)
         -   [Parameters](#parameters-15)
-    -   [first](#first)
+    -   [valueOf](#valueof)
         -   [Parameters](#parameters-16)
-    -   [second](#second)
+    -   [first](#first)
         -   [Parameters](#parameters-17)
-    -   [third](#third)
+    -   [second](#second)
         -   [Parameters](#parameters-18)
-    -   [nth](#nth)
+    -   [third](#third)
         -   [Parameters](#parameters-19)
+    -   [nth](#nth)
+        -   [Parameters](#parameters-20)
 
 ## SExpr
 
-Class of S-Expression resolver that includes parser, serializer, tree constructors, and tree walker utilities
+Class of S-Expression resolver that includes parser, serializer, tree constructors, and tree walker utilities.
+
+Creates an instance of SExpr. Optional `options` input for configuring default behavior, such as how to recognize null, boolean values as it's up to the programmer to decide the syntax. Nevertheless, here is the default that you can override.
+
+```javascript
+{
+ truthy: ['true', '#t'],
+ falsy: ['false', '#f'],
+ nully: ['null', '#nil']
+}
+```
+
+### Parameters
+
+-   `options` **any**  (optional, default `{}`)
 
 ### context
 
@@ -337,7 +352,7 @@ Check if a node is a number
 #### Parameters
 
 -   `e` **any** a node to check if it's a number, optionally compare to a given value
--   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** an optional value to compare to
+-   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** an optional value to compare to (optional, default `undefined`)
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's a number (and equals the given value if provided)
 
@@ -358,7 +373,7 @@ Check if a node is a string, optionally compare to a given string.
 #### Parameters
 
 -   `e` **any** a node to check if it's a string
--   `s` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** optional string to compare to
+-   `s` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** optional string to compare to (optional, default `undefined`)
 
 Returns **any** true if it's a string (and equals the given string if provided)
 
@@ -380,7 +395,7 @@ Get the first child of a node.
 
 -   `e` **any** a node to get its child
 
-Returns **any** child if exists
+Returns **any** a child node if exists
 
 ### second
 
@@ -390,7 +405,7 @@ Get the second child of a node.
 
 -   `e` **any** a node to get its child
 
-Returns **any** child if exists
+Returns **any** a child node if exists
 
 ### third
 
@@ -400,15 +415,15 @@ Get the third child of a node.
 
 -   `e` **any** a node to get its child
 
-Returns **any** child if exists
+Returns **any** a child node if exists
 
 ### nth
 
-Get the n-th child of a node. Similar to the shorthand `first`, `second`, `third`, `fourth`, `fifth` ... `tenth`, but for any location.
+Get the n-th child of a node. Similar to the shorthand `first`, `second`, `third`, `fourth`, `fifth` ... `tenth`, but at any position provided.
 
 #### Parameters
 
 -   `e` **any** a node to get its child
--   `n`  
+-   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** position of the child node, starting from 1
 
-Returns **any** child if exists
+Returns **any** a child node if exists

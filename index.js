@@ -1,15 +1,21 @@
 'use strict'
 /**
- * Class of S-Expression resolver that includes parser, serializer, tree constructors, and tree walker utilities
- * @public
- * @class SExpr
+ * Class of S-Expression resolver that includes parser, serializer, tree constructors, and tree walker utilities.
+ * 
+ * Creates an instance of SExpr. Optional `options` input for configuring default behavior, such as how to recognize null, boolean values as it's up to the programmer to decide the syntax. Nevertheless, here is the default that you can override.
+ * ```javascript
+ * {
+ *  truthy: ['true', '#t'],
+ *  falsy: ['false', '#f'],
+ *  nully: ['null', '#nil']
+ * }
+ * ```
  */
 class SExpr {
   /**
    * Public field for programmers to store arbitrary data that might be useful for parsing expressions
    * @public
-   * @default {}
-   * @memberof SExpr
+   * @default {}   
    */
   context = {}
 
@@ -18,17 +24,9 @@ class SExpr {
   nully = ['null', '#nil']
 
   /**
-   * Creates an instance of SExpr. Optional `options` input for configuring default behavior, such as how to recognize null, boolean values as it's up to the programmer to decide the syntax:
-   * ```json
-   * {
-   *  truthy: ['true', '#t'],
-   *  falsy: ['false', '#f']
-   *  nully: ['null', '#nil']
-   * }
-   * ```
+
    *
-   * @param {*} [options={}]
-   * @memberof SExpr
+   * @param {*} [options={}]  
    */
   constructor (options = {}) {
     this.truthy = options.truthy || this.truthy
@@ -40,8 +38,7 @@ class SExpr {
    * Parse a S-expression string into a JSON object representing an expression tree
    *
    * @param  {string} str S-expression string
-   * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression
-   * @memberof SExpr
+   * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression      
    * @ref credit: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
   parse (str) {
@@ -68,7 +65,6 @@ class SExpr {
    *
    * @param {*} L
    * @return {*}
-   * @memberof SExpr
    */
   serialize (L) {
     let s = ''
@@ -83,8 +79,7 @@ class SExpr {
    * const node = S.expression(S.identifier('a'))
    * // ['a']
    * @param {string} id
-   * @return {string} symbol
-   * @memberof SExpr
+   * @return {string} symbol   
    */
   identifier (id) {
     return id
@@ -102,7 +97,6 @@ class SExpr {
    * @param {any} e a node to check
    * @param {string} [id=undefined] optional id name to compare to
    * @return {boolean} true if it is an identifier
-   * @memberof SExpr
    */
   isIdentifier (e, id = undefined) {
     const isId =
@@ -128,7 +122,6 @@ class SExpr {
    * @param {any} a a node
    * @param {any} b another node to compare to
    * @return {boolean} true if they are the same
-   * @memberof SExpr
    */
   isEqual (a, b) {
     const aArray = Array.isArray(a)
@@ -158,7 +151,6 @@ class SExpr {
    *
    * @param {rest} exps optional initialization list of elements
    * @return {json} a tree node
-   * @memberof SExpr
    */
   expression (...exps) {
     if (exps) {
@@ -173,7 +165,6 @@ class SExpr {
    * @param {any} e a node to check whether it's an expression
    * @param {json} [s=undefined] optional expression to compare to
    * @return {boolean} true if it's an expression (and equals the compared expression if provided)
-   * @memberof SExpr
    */
   isExpression (e, s = undefined) {
     const isExpr = Array.isArray(e)
@@ -189,7 +180,6 @@ class SExpr {
    *
    * @param {boolean} v boolean value
    * @return {string} a node with name corresponding to a boolean value
-   * @memberof SExpr
    */
   boolean (v) {
     if (v) {
@@ -205,7 +195,6 @@ class SExpr {
    * @param {any} e a node to check whether it's a boolean
    * @param {boolean} [b=undefined] optional state to compare to
    * @return {boolean} true if it's a boolean (and equals the given state if provided)
-   * @memberof SExpr
    */
   isBoolean (e, b = undefined) {
     if (typeof e === 'string' || e instanceof String) {
@@ -234,7 +223,6 @@ class SExpr {
    *
    * @param {any} e a node to check if it's truthy
    * @return {boolean} true if it's truthy
-   * @memberof SExpr
    */
   isTruthy (e) {
     if (typeof e == 'string' || e instanceof String) {
@@ -251,7 +239,6 @@ class SExpr {
    * Create a null node.
    *
    * @return {string} a node with name representing null value
-   * @memberof SExpr
    */
   null () {
     return `${this.nully[0]}`
@@ -262,7 +249,6 @@ class SExpr {
    *
    * @param {any} e a node to check if it's null
    * @return {boolean}  true if it's null
-   * @memberof SExpr
    */
   isNull (e) {
     if (typeof e == 'string' || e instanceof String) {
@@ -280,7 +266,6 @@ class SExpr {
    *
    * @param {number} n value of the new node
    * @return {number} a node with number value
-   * @memberof SExpr
    */
   number (n) {
     return n
@@ -290,9 +275,8 @@ class SExpr {
    * Check if a node is a number
    *
    * @param {any} e a node to check if it's a number, optionally compare to a given value
-   * @param {number} n an optional value to compare to
+   * @param {number} [n=undefined]  an optional value to compare to
    * @return {boolean} true if it's a number (and equals the given value if provided)
-   * @memberof SExpr
    */
   isNumber (e, n) {
     const isNum = typeof e === 'number' || e instanceof Number
@@ -307,7 +291,6 @@ class SExpr {
    *
    * @param {string} str string value of the node
    * @return {string} a node with string value
-   * @memberof SExpr
    */
   string (str) {
     return `"${str}"`
@@ -317,9 +300,8 @@ class SExpr {
    * Check if a node is a string, optionally compare to a given string.
    *
    * @param {any} e a node to check if it's a string
-   * @param {string} s optional string to compare to
+   * @param {string} [s=undefined] optional string to compare to
    * @return {*} true if it's a string (and equals the given string if provided)
-   * @memberof SExpr
    */
   isString (e, s) {
     const isStr = (typeof e === 'string' || e instanceof String) && e[0] === '"'
@@ -334,7 +316,6 @@ class SExpr {
    *
    * @param {any} e a node to extract value
    * @return {any} value
-   * @memberof SExpr
    */
   valueOf (e) {
     if (typeof e === 'string' || e instanceof String) {
@@ -371,8 +352,7 @@ class SExpr {
    * Get the first child of a node.
    *
    * @param {any} e a node to get its child
-   * @return {any} child if exists
-   * @memberof SExpr
+   * @return {any} a child node if exists
    */
   first (e) {
     if (Array.isArray(e)) {
@@ -385,8 +365,7 @@ class SExpr {
    * Get the second child of a node.
    *
    * @param {any} e a node to get its child
-   * @return {any} child if exists
-   * @memberof SExpr
+   * @return {any} a child node if exists
    */
   second (e) {
     if (Array.isArray(e)) {
@@ -399,8 +378,7 @@ class SExpr {
    * Get the third child of a node.
    *
    * @param {any} e a node to get its child
-   * @return {any} child if exists
-   * @memberof SExpr
+   * @return {any} a child node if exists
    */
   third (e) {
     if (Array.isArray(e)) {
@@ -459,11 +437,11 @@ class SExpr {
   }
 
   /**
-   * Get the n-th child of a node. Similar to the shorthand `first`, `second`, `third`, `fourth`, `fifth` ... `tenth`, but for any location.
+   * Get the n-th child of a node. Similar to the shorthand `first`, `second`, `third`, `fourth`, `fifth` ... `tenth`, but at any position provided.
    *
    * @param {any} e a node to get its child
-   * @return {any} child if exists
-   * @memberof SExpr
+   * @param {number} n position of the child node, starting from 1
+   * @return {any} a child node if exists
    */
   nth (e, n) {
     if (Array.isArray(e)) {
