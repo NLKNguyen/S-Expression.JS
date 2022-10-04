@@ -1,7 +1,7 @@
-'use strict'
+"use strict"
 /**
  * Class of S-Expression resolver that includes parser, serializer, tree constructors, and tree walker utilities.
- * 
+ *
  * Creates an instance of SExpr. Optional `options` input for configuring default behavior, such as how to recognize null, boolean values as it's up to the programmer to decide the syntax. Nevertheless, here is the default that you can override.
  * ```javascript
  * {
@@ -15,20 +15,20 @@ class SExpr {
   /**
    * Public field for programmers to store arbitrary data that might be useful for parsing expressions
    * @public
-   * @default {}   
+   * @default {}
    */
   context = {}
 
-  truthy = ['true', '#t']
-  falsy = ['false', '#f']
-  nully = ['null', '#nil']
+  truthy = ["true", "#t"]
+  falsy = ["false", "#f"]
+  nully = ["null", "#nil"]
 
   /**
 
    *
    * @param {*} [options={}]  
    */
-  constructor (options = {}) {
+  constructor(options = {}) {
     this.truthy = options.truthy || this.truthy
     this.falsy = options.falsy || this.falsy
     this.nully = options.nully || this.nully
@@ -38,10 +38,10 @@ class SExpr {
    * Parse a S-expression string into a JSON object representing an expression tree
    *
    * @param  {string} str S-expression string
-   * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression      
+   * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression
    * @ref credit: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
-  parse (str) {
+  parse(str) {
     // const t = str.match(/\s*("[^"]*"|\(|\)|"|[^\s()"]+)/g)
     const t = str.match(/\s*("[^"\\]*(?:\\[\s\S][^"\\]*)*"|\(|\)|"|[^\s()"]+)/g)
     let o, c, i
@@ -49,16 +49,16 @@ class SExpr {
       let n,
         ti = t[i].trim()
       if (ti == '"') return
-      else if (ti == '(') (t[i] = '['), (c += 1)
-      else if (ti == ')') (t[i] = ']'), (c -= 1)
+      else if (ti == "(") (t[i] = "["), (c += 1)
+      else if (ti == ")") (t[i] = "]"), (c -= 1)
       else if ((n = +ti) == ti) t[i] = n
       else t[i] = "'" + ti.replaceAll("'", "\\'") + "'"
-      if (i > 0 && ti != ']' && t[i - 1].trim() != '(') t.splice(i, 0, ',')
+      if (i > 0 && ti != "]" && t[i - 1].trim() != "(") t.splice(i, 0, ",")
       if (!c)
         if (!o) o = true
         else return
     }
-    return c ? undefined : eval(t.join(''))
+    return c ? undefined : eval(t.join(""))
   }
 
   /**
@@ -67,10 +67,10 @@ class SExpr {
    * @param {*} L
    * @return {*}
    */
-  serialize (L) {
-    let s = ''
-    for (let i = 0, e = L.length; i < e; i++) s += (s ? ' ' : '') + L[i]
-    return '(' + s + ')'
+  serialize(L) {
+    let s = ""
+    for (let i = 0, e = L.length; i < e; i++) s += (s ? " " : "") + L[i]
+    return "(" + s + ")"
   }
 
   /**
@@ -80,9 +80,9 @@ class SExpr {
    * const node = S.expression(S.identifier('a'))
    * // ['a']
    * @param {string} id
-   * @return {string} symbol   
+   * @return {string} symbol
    */
-  identifier (id) {
+  identifier(id) {
     return id
   }
 
@@ -99,7 +99,7 @@ class SExpr {
    * @param {string} [id=undefined] optional id name to compare to
    * @return {boolean} true if it is an identifier
    */
-  isIdentifier (e, id = undefined) {
+  isIdentifier(e, id = undefined) {
     const isId =
       e &&
       !this.isExpression(e) &&
@@ -124,7 +124,7 @@ class SExpr {
    * @param {any} b another node to compare to
    * @return {boolean} true if they are the same
    */
-  isEqual (a, b) {
+  isEqual(a, b) {
     const aArray = Array.isArray(a)
     const bArray = Array.isArray(b)
     if (aArray != bArray) {
@@ -153,7 +153,7 @@ class SExpr {
    * @param {rest} exps optional initialization list of elements
    * @return {json} a tree node
    */
-  expression (...exps) {
+  expression(...exps) {
     if (exps) {
       return [...exps]
     }
@@ -167,7 +167,7 @@ class SExpr {
    * @param {json} [s=undefined] optional expression to compare to
    * @return {boolean} true if it's an expression (and equals the compared expression if provided)
    */
-  isExpression (e, s = undefined) {
+  isExpression(e, s = undefined) {
     const isExpr = Array.isArray(e)
 
     if (s) {
@@ -182,7 +182,7 @@ class SExpr {
    * @param {boolean} v boolean value
    * @return {string} a node with name corresponding to a boolean value
    */
-  boolean (v) {
+  boolean(v) {
     if (v) {
       return `${this.truthy[0]}`
     } else {
@@ -197,8 +197,8 @@ class SExpr {
    * @param {boolean} [b=undefined] optional state to compare to
    * @return {boolean} true if it's a boolean (and equals the given state if provided)
    */
-  isBoolean (e, b = undefined) {
-    if (typeof e === 'string' || e instanceof String) {
+  isBoolean(e, b = undefined) {
+    if (typeof e === "string" || e instanceof String) {
       for (let t of this.truthy) {
         if (e === t) {
           if (b != undefined) {
@@ -225,8 +225,8 @@ class SExpr {
    * @param {any} e a node to check if it's truthy
    * @return {boolean} true if it's truthy
    */
-  isTruthy (e) {
-    if (typeof e == 'string' || e instanceof String) {
+  isTruthy(e) {
+    if (typeof e == "string" || e instanceof String) {
       for (let f of this.falsy) {
         if (e === f) {
           return false
@@ -241,7 +241,7 @@ class SExpr {
    *
    * @return {string} a node with name representing null value
    */
-  null () {
+  null() {
     return `${this.nully[0]}`
   }
 
@@ -251,8 +251,8 @@ class SExpr {
    * @param {any} e a node to check if it's null
    * @return {boolean}  true if it's null
    */
-  isNull (e) {
-    if (typeof e == 'string' || e instanceof String) {
+  isNull(e) {
+    if (typeof e == "string" || e instanceof String) {
       for (let n of this.nully) {
         if (e === n) {
           return true
@@ -268,7 +268,7 @@ class SExpr {
    * @param {number} n value of the new node
    * @return {number} a node with number value
    */
-  number (n) {
+  number(n) {
     return n
   }
 
@@ -279,8 +279,8 @@ class SExpr {
    * @param {number} [n=undefined]  an optional value to compare to
    * @return {boolean} true if it's a number (and equals the given value if provided)
    */
-  isNumber (e, n) {
-    const isNum = typeof e === 'number' || e instanceof Number
+  isNumber(e, n) {
+    const isNum = typeof e === "number" || e instanceof Number
     if (n != undefined) {
       return isNum && isEqual(e, n)
     }
@@ -293,7 +293,7 @@ class SExpr {
    * @param {string} str string value of the node
    * @return {string} a node with string value
    */
-  string (str) {
+  string(str) {
     return `"${str}"`
   }
 
@@ -304,8 +304,8 @@ class SExpr {
    * @param {string} [s=undefined] optional string to compare to
    * @return {*} true if it's a string (and equals the given string if provided)
    */
-  isString (e, s) {
-    const isStr = (typeof e === 'string' || e instanceof String) && e[0] === '"'
+  isString(e, s) {
+    const isStr = (typeof e === "string" || e instanceof String) && e[0] === '"'
     if (s != undefined) {
       return isStr && isEqual(e, s)
     }
@@ -318,8 +318,8 @@ class SExpr {
    * @param {any} e a node to extract value
    * @return {any} value
    */
-  valueOf (e) {
-    if (typeof e === 'string' || e instanceof String) {
+  valueOf(e) {
+    if (typeof e === "string" || e instanceof String) {
       // maybe quoted string
       if (e[0] === '"') {
         return e.slice(1, e.length - 1)
@@ -355,7 +355,7 @@ class SExpr {
    * @param {any} e a node to get its child
    * @return {any} a child node if exists
    */
-  first (e) {
+  first(e) {
     if (Array.isArray(e)) {
       return e[0]
     }
@@ -368,7 +368,7 @@ class SExpr {
    * @param {any} e a node to get its child
    * @return {any} a child node if exists
    */
-  second (e) {
+  second(e) {
     if (Array.isArray(e)) {
       return e[1]
     }
@@ -381,56 +381,56 @@ class SExpr {
    * @param {any} e a node to get its child
    * @return {any} a child node if exists
    */
-  third (e) {
+  third(e) {
     if (Array.isArray(e)) {
       return e[2]
     }
     return undefined
   }
 
-  fourth (e) {
+  fourth(e) {
     if (Array.isArray(e)) {
       return e[3]
     }
     return undefined
   }
 
-  fifth (e) {
+  fifth(e) {
     if (Array.isArray(e)) {
       return e[4]
     }
     return undefined
   }
 
-  sixth (e) {
+  sixth(e) {
     if (Array.isArray(e)) {
       return e[5]
     }
     return undefined
   }
 
-  seventh (e) {
+  seventh(e) {
     if (Array.isArray(e)) {
       return e[6]
     }
     return undefined
   }
 
-  eighth (e) {
+  eighth(e) {
     if (Array.isArray(e)) {
       return e[7]
     }
     return undefined
   }
 
-  ninth (e) {
+  ninth(e) {
     if (Array.isArray(e)) {
       return e[8]
     }
     return undefined
   }
 
-  tenth (e) {
+  tenth(e) {
     if (Array.isArray(e)) {
       return e[9]
     }
@@ -444,7 +444,7 @@ class SExpr {
    * @param {number} n position of the child node, starting from 1
    * @return {any} a child node if exists
    */
-  nth (e, n) {
+  nth(e, n) {
     if (Array.isArray(e)) {
       return e[n - 1]
     }
