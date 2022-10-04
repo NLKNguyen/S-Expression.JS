@@ -42,7 +42,8 @@ class SExpr {
    * @ref credit: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
   parse (str) {
-    const t = str.match(/\s*("[^"]*"|\(|\)|"|[^\s()"]+)/g)
+    // const t = str.match(/\s*("[^"]*"|\(|\)|"|[^\s()"]+)/g)
+    const t = str.match(/\s*("[^"\\]*(?:\\[\s\S][^"\\]*)*"|\(|\)|"|[^\s()"]+)/g)
     let o, c, i
     for (o, c = 0, i = t.length - 1; i >= 0; i--) {
       let n,
@@ -51,7 +52,7 @@ class SExpr {
       else if (ti == '(') (t[i] = '['), (c += 1)
       else if (ti == ')') (t[i] = ']'), (c -= 1)
       else if ((n = +ti) == ti) t[i] = n
-      else t[i] = "'" + ti.replace("'", "\\'") + "'"
+      else t[i] = "'" + ti.replaceAll("'", "\\'") + "'"
       if (i > 0 && ti != ']' && t[i - 1].trim() != '(') t.splice(i, 0, ',')
       if (!c)
         if (!o) o = true
