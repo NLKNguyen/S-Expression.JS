@@ -23,6 +23,22 @@ class SExpr {
   falsy = ["false", "#f"]
   nully = ["null", "#nil"]
 
+  lineCommentPrefixes = [";"]
+
+  evaluator = {
+    notation: "functional",
+    //unwrap_list_with_single_atom: false,
+    // atom_as_string: false,
+    // right_associations: ["'"],
+    // handlers: {
+    //   "'": {
+    //     notation: null,
+    //     transform: (forms) => forms,
+    //     apply: (forms) => forms
+    //   },
+    // },
+    // apply: (forms) => forms,
+  }
   /**
 
    *
@@ -32,18 +48,37 @@ class SExpr {
     this.truthy = options.truthy || this.truthy
     this.falsy = options.falsy || this.falsy
     this.nully = options.nully || this.nully
+    this.line_comment_prefix =
+      options.line_comment_prefix || this.line_comment_prefix
+    this.evaluator = options.evaluator || this.evaluator
   }
 
+  stripComments(str) {
+    for (let lineCommentPrefix of this.lineCommentPrefixes) {
+      // '(;[^"\\n\\r]*(?:"[^"\\n\\r]*"[^"\\n\\r]*)*[\\r\\n])'
+      const regex = new RegExp(
+        `(${lineCommentPrefix}[^"\\n\\r]*(?:"[^"\\n\\r]*"[^"\\n\\r]*)*[\\r\\n])`,
+        "g"
+      )
+      // console.dir(regex)
+      // console.dir(regex.exec(str))
+      str = str.replaceAll(regex, "")
+      // console.dir(str)
+    }
+    return str
+  }
   /**
    * Parse a S-expression string into a JSON object representing an expression tree
    *
    * @param  {string} str S-expression string
    * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression
-   * @ref credit: https://rosettacode.org/wiki/S-expressions#JavaScript
+   * @ref improved on: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
   parse(str) {
+    str = this.stripComments(str + "\n")
     // const t = str.match(/\s*("[^"]*"|\(|\)|"|[^\s()"]+)/g)
     const t = str.match(/\s*("[^"\\]*(?:\\[\s\S][^"\\]*)*"|\(|\)|"|[^\s()"]+)/g)
+    // console.log(JSON.stringify(t, null, 4))
     let o, c, i
     for (o, c = 0, i = t.length - 1; i >= 0; i--) {
       let n,
@@ -52,7 +87,14 @@ class SExpr {
       else if (ti == "(") (t[i] = "["), (c += 1)
       else if (ti == ")") (t[i] = "]"), (c -= 1)
       else if ((n = +ti) == ti) t[i] = n
-      else t[i] = "'" + ti.replaceAll("'", "\\'") + "'"
+      else
+        t[i] =
+          "'" +
+          ti
+            .replaceAll("\r", "\\r")
+            .replaceAll("\n", "\\n")
+            .replaceAll("'", "\\'") +
+          "'"
       if (i > 0 && ti != "]" && t[i - 1].trim() != "(") t.splice(i, 0, ",")
       if (!c)
         if (!o) o = true
@@ -64,12 +106,12 @@ class SExpr {
   /**
    * Serialize an expression tree into an S-expression string
    *
-   * @param {*} L
+   * @param {*} E
    * @return {*}
    */
-  serialize(L) {
+  serialize(E) {
     let s = ""
-    for (let i = 0, e = L.length; i < e; i++) s += (s ? " " : "") + L[i]
+    for (let i = 0, e = E.length; i < e; i++) s += (s ? " " : "") + E[i]
     return "(" + s + ")"
   }
 
@@ -91,15 +133,15 @@ class SExpr {
    * @example
    * const S = new SExpr()
    * const node = S.expression(S.identifier('a'))
-   * console.log(S.isIdentifier(S.first(node)))
+   * console.log(S.isAtom(S.first(node)))
    * // true
-   * console.log(S.isIdentifier(S.first(node, 'a')))
+   * console.log(S.isAtom(S.first(node, 'a')))
    * // true
    * @param {any} e a node to check
    * @param {string} [id=undefined] optional id name to compare to
    * @return {boolean} true if it is an identifier
    */
-  isIdentifier(e, id = undefined) {
+  isAtom(e, id = undefined) {
     const isId =
       e &&
       !this.isExpression(e) &&
@@ -234,6 +276,10 @@ class SExpr {
       }
     }
     return true
+  }
+
+  isMissing(e) {
+    return e === undefined
   }
 
   /**
@@ -449,6 +495,55 @@ class SExpr {
       return e[n - 1]
     }
     return undefined
+  }
+
+  /**
+   * Skip the first child node and get the rest
+   *
+   * @param {any} e a node to get its child
+   * @return {any} the rest of the nodes or undefined if the input node is not an expression
+   */
+  rest(e) {
+    if (this.isExpression(e)) {
+      return e.slice(1)
+    }
+    return undefined
+  }
+
+  /**
+   * evaluate an expression tree into data structures
+   *
+   * @param {*} E
+   * @return {*}
+   */
+
+  evaluate(expression, mode = null, state = {}) {
+    mode = mode || this.evaluator
+
+    if (mode.notation === null) {
+      return expression
+    }
+
+    if (mode.notation === "functional") {
+      const result = []
+      for (let form of expression) {
+        if (this.isExpression(form)) {
+          const head = this.first(form)
+          if (this.isMissing(head)) {
+            result.push({ "": [] })
+          } else {
+            const rest = this.rest(form)
+            result.push({ [head]: this.evaluate(rest, mode, state) })
+          }
+        } else if (this.isAtom(form)) {
+          result.push({ [form]: form }) // atom
+        } else {
+          result.push(this.valueOf(form)) // normal form / self evaluated, e.g. string, number, boolean
+        }
+      }
+      return result
+    }
+    throw new Error("unsupported notation: " + mode.notation)
   }
 }
 
