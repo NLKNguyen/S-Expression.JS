@@ -1,14 +1,8 @@
-# S-Expression in JavaScript
-
+<h1 align="center">S-Expression in JavaScript</h1>
 <p align="center">
-
   <a href="https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE" target="_blank">
     <img alt="License: ISC" src="https://img.shields.io/github/license/NLKNguyen/S-Expression.JS.svg?color=blueviolet" />
 
-  </a>
-
-  <a href="https://github.com/NLKNguyen/S-Expression.JS/releases" target="_blank">
-    <img alt="Release" src="https://img.shields.io/github/release/NLKNguyen/S-Expression.JS.svg?color=green" />
   </a>
 
   <a href="https://github.com/NLKNguyen/S-Expression.JS/issues" target="_blank">
@@ -26,7 +20,6 @@
   <a href="https://www.amazon.com/gp/registry/wishlist/3E0E6ZS7RQ5GS/" title="Send a gift through my Amazon wishlist">
     <img src="https://img.shields.io/badge/send%20a%20gift-amazon-darkorange.svg" alt="Amazon donate button" />
   </a>
-
 </p>
 
 <p align="center">
@@ -41,7 +34,7 @@ Zero-dependencies. Tree structure as plain JSON. Ideal for custom data transfer 
 
 # ⭐ Overview
 
-<p>S-Expression is surprisingly a powerful yet very simple concept to represent both data and function with minimalist syntax. It was popularized by LISP (a classic programming language that was used heavily in AI research) in the very beginning of computer science, circa 1960, and yet S-Expression is still one of the best ideas around due to its simplicity and extensibility. It contains only lists containing symbols and nested lists, and it's totally up to the programmers to make the meanings out of those symbols and their arrangements. S-Expression is a good choice for many use cases ranging from command format, config file format, small domain-specific language to a full-blown programming language.</p>
+<p>S-Expression is surprisingly a powerful and very simple concept to represent both data and function with minimalist syntax. It was popularized by LISP (a classic programming language that was used heavily in AI research) in the very beginning of computer science, circa 1960, and yet S-Expression is still one of the best ideas around due to its simplicity and extensibility. It contains only lists containing symbols and nested lists, and it's totally up to the programmers to make the meanings out of those symbols and their arrangements. S-Expression is a good choice for many use cases ranging from command format, config file format, small domain-specific language to a full-blown programming language.</p>
 
 <p>S-Expression is so minimal that it resembles an abstract syntax tree (AST), which is the underlying representation of many high-level programming languages when their syntactic sugar code is parsed through the typical language grammars. This appeals to many language designers because they can bypass the typical grammar design in forms such as BNF and instead focus on the core syntax tree to accomplish their main goals for the languages, and consequently providing a native/in-language way to manipulate the syntax tree thus enables more dynamic capability and easier metaprogramming.</p>
 
@@ -116,9 +109,11 @@ I try to respond to users' feedback and feature requests as much as possible. Ob
 
 # 📝 License
 
-Copyright © 2020 [Nikyle Nguyen](https://github.com/NLKNguyen)
+Copyright © 2022 [Nikyle Nguyen](https://github.com/NLKNguyen)
 
-The project is [ISC License](https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE)
+The project is [Unlicense License](https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE)
+
+It is "a license with no conditions whatsoever which dedicates works to the public domain. Unlicensed works, modifications, and larger works may be distributed under different terms and without source code." This simply means that the project is free to use in any capacity without any warranty while reserving the rights for others to also freely do anything with it.
 
 # API
 
@@ -136,7 +131,7 @@ The project is [ISC License](https://github.com/NLKNguyen/S-Expression.JS/blob/m
     -   [identifier](#identifier)
         -   [Parameters](#parameters-3)
         -   [Examples](#examples)
-    -   [isIdentifier](#isidentifier)
+    -   [isAtom](#isatom)
         -   [Parameters](#parameters-4)
         -   [Examples](#examples-1)
     -   [isEqual](#isequal)
@@ -151,33 +146,57 @@ The project is [ISC License](https://github.com/NLKNguyen/S-Expression.JS/blob/m
         -   [Parameters](#parameters-9)
     -   [isTruthy](#istruthy)
         -   [Parameters](#parameters-10)
+    -   [isMissing](#ismissing)
+        -   [Parameters](#parameters-11)
     -   [null](#null)
     -   [isNull](#isnull)
-        -   [Parameters](#parameters-11)
-    -   [number](#number)
         -   [Parameters](#parameters-12)
-    -   [isNumber](#isnumber)
+    -   [number](#number)
         -   [Parameters](#parameters-13)
-    -   [string](#string)
+    -   [isNumber](#isnumber)
         -   [Parameters](#parameters-14)
-    -   [isString](#isstring)
+    -   [string](#string)
         -   [Parameters](#parameters-15)
-    -   [valueOf](#valueof)
+    -   [isString](#isstring)
         -   [Parameters](#parameters-16)
-    -   [first](#first)
+    -   [valueOf](#valueof)
         -   [Parameters](#parameters-17)
-    -   [second](#second)
+    -   [first](#first)
         -   [Parameters](#parameters-18)
-    -   [third](#third)
+    -   [second](#second)
         -   [Parameters](#parameters-19)
-    -   [nth](#nth)
+    -   [third](#third)
         -   [Parameters](#parameters-20)
+    -   [fourth](#fourth)
+        -   [Parameters](#parameters-21)
+    -   [fifth](#fifth)
+        -   [Parameters](#parameters-22)
+    -   [sixth](#sixth)
+        -   [Parameters](#parameters-23)
+    -   [seventh](#seventh)
+        -   [Parameters](#parameters-24)
+    -   [eighth](#eighth)
+        -   [Parameters](#parameters-25)
+    -   [ninth](#ninth)
+        -   [Parameters](#parameters-26)
+    -   [tenth](#tenth)
+        -   [Parameters](#parameters-27)
+    -   [nth](#nth)
+        -   [Parameters](#parameters-28)
+    -   [rest](#rest)
+        -   [Parameters](#parameters-29)
+    -   [interpret](#interpret)
+        -   [Parameters](#parameters-30)
 
 ## SExpr
 
-Class of S-Expression resolver that includes parser, serializer, tree constructors, and tree walker utilities.
+Class of S-Expression resolver that includes parser, serializer, tree
+constructors, and tree walker utilities.
 
-Creates an instance of SExpr. Optional `options` input for configuring default behavior, such as how to recognize null, boolean values as it's up to the programmer to decide the syntax. Nevertheless, here is the default that you can override.
+Creates an instance of SExpr. Optional `options` input for configuring
+default behavior, such as how to recognize null, boolean values as it's up to
+the programmer to decide the syntax. Nevertheless, here is the default that
+you can override.
 
 ```javascript
 {
@@ -193,17 +212,20 @@ Creates an instance of SExpr. Optional `options` input for configuring default b
 
 ### context
 
-Public field for programmers to store arbitrary data that might be useful for parsing expressions
+Public field for programmers to store arbitrary data that might be useful
+for parsing expressions
 
 ### parse
 
-Parse a S-expression string into a JSON object representing an expression tree
+Parse a S-expression string into a JSON object representing an expression
+tree
 
 #### Parameters
 
 -   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** S-expression string
 
-Returns **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** an expression tree in form of list that can include nested lists similar to the structure of the input S-expression
+Returns **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** an expression tree in form of list that can include nested
+lists similar to the structure of the input S-expression
 
 ### serialize
 
@@ -211,7 +233,7 @@ Serialize an expression tree into an S-expression string
 
 #### Parameters
 
--   `L` **any** 
+-   `E` **any** 
 
 Returns **any** 
 
@@ -233,7 +255,7 @@ const node = S.expression(S.identifier('a'))
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** symbol
 
-### isIdentifier
+### isAtom
 
 Check if a node is an identifier, optionally compare to a given name
 
@@ -247,9 +269,9 @@ Check if a node is an identifier, optionally compare to a given name
 ```javascript
 const S = new SExpr()
 const node = S.expression(S.identifier('a'))
-console.log(S.isIdentifier(S.first(node)))
+console.log(S.isAtom(S.first(node)))
 // true
-console.log(S.isIdentifier(S.first(node, 'a')))
+console.log(S.isAtom(S.first(node, 'a')))
 // true
 ```
 
@@ -278,14 +300,16 @@ Returns **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Glo
 
 ### isExpression
 
-Check if a node is an expression, and optionally compare to a given expression
+Check if a node is an expression, and optionally compare to a given
+expression
 
 #### Parameters
 
 -   `e` **any** a node to check whether it's an expression
 -   `s` **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** optional expression to compare to (optional, default `undefined`)
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's an expression (and equals the compared expression if provided)
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's an expression (and equals the compared
+expression if provided)
 
 ### boolean
 
@@ -306,17 +330,29 @@ Check if a node is a boolean value, optionally compare to a given state
 -   `e` **any** a node to check whether it's a boolean
 -   `b` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** optional state to compare to (optional, default `undefined`)
 
-Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's a boolean (and equals the given state if provided)
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's a boolean (and equals the given state if
+provided)
 
 ### isTruthy
 
-Check if a node is considered truthy. Anything but an explicit false value is truthy.
+Check if a node is considered truthy. Anything but an explicit false value
+is truthy.
 
 #### Parameters
 
 -   `e` **any** a node to check if it's truthy
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's truthy
+
+### isMissing
+
+Check if a node doesn't exist, a.k.a undefined
+
+#### Parameters
+
+-   `e` **any** a node to check if it doesn't exist
+
+Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it doesn't exist (undefined)
 
 ### null
 
@@ -388,7 +424,7 @@ Returns **any** value
 
 ### first
 
-Get the first child of a node.
+Get the 1st child of a node.
 
 #### Parameters
 
@@ -398,7 +434,7 @@ Returns **any** a child node if exists
 
 ### second
 
-Get the second child of a node.
+Get the 2nd child of a node.
 
 #### Parameters
 
@@ -408,7 +444,77 @@ Returns **any** a child node if exists
 
 ### third
 
-Get the third child of a node.
+Get the 3rd child of a node.
+
+#### Parameters
+
+-   `e` **any** a node to get its child
+
+Returns **any** a child node if exists
+
+### fourth
+
+Get the 4th child of a node.
+
+#### Parameters
+
+-   `e` **any** a node to get its child
+
+Returns **any** a child node if exists
+
+### fifth
+
+Get the 5th child of a node.
+
+#### Parameters
+
+-   `e` **any** a node to get its child
+
+Returns **any** a child node if exists
+
+### sixth
+
+Get the 6th child of a node.
+
+#### Parameters
+
+-   `e` **any** a node to get its child
+
+Returns **any** a child node if exists
+
+### seventh
+
+Get the 7th child of a node.
+
+#### Parameters
+
+-   `e` **any** a node to get its child
+
+Returns **any** a child node if exists
+
+### eighth
+
+Get the 8th child of a node.
+
+#### Parameters
+
+-   `e` **any** a node to get its child
+
+Returns **any** a child node if exists
+
+### ninth
+
+Get the 9th child of a node.
+
+#### Parameters
+
+-   `e` **any** a node to get its child
+
+Returns **any** a child node if exists
+
+### tenth
+
+Get the 10th child of a node.
 
 #### Parameters
 
@@ -426,3 +532,29 @@ Get the n-th child of a node. Similar to the shorthand `first`, `second`, `third
 -   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** position of the child node, starting from 1
 
 Returns **any** a child node if exists
+
+### rest
+
+Skip the first child node and get the rest
+
+#### Parameters
+
+-   `e` **any** a node to get its child
+
+Returns **any** the rest of the nodes or undefined if the input node is not an expression
+
+### interpret
+
+interpret a parsed expression tree (AST) into data structures in according
+to a method of interpretation. The current available method is using
+"functional" notation similar to LISP dialects such as CLIPS, Clojure,
+Scheme, Racket, etc.
+
+#### Parameters
+
+-   `expression`  
+-   `mode`   (optional, default `null`)
+-   `state`   (optional, default `{}`)
+-   `E` **any** 
+
+Returns **any** 

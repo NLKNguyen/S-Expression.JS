@@ -1,8 +1,12 @@
 "use strict"
 /**
- * Class of S-Expression resolver that includes parser, serializer, tree constructors, and tree walker utilities.
+ * Class of S-Expression resolver that includes parser, serializer, tree
+ * constructors, and tree walker utilities.
  *
- * Creates an instance of SExpr. Optional `options` input for configuring default behavior, such as how to recognize null, boolean values as it's up to the programmer to decide the syntax. Nevertheless, here is the default that you can override.
+ * Creates an instance of SExpr. Optional `options` input for configuring
+ * default behavior, such as how to recognize null, boolean values as it's up to
+ * the programmer to decide the syntax. Nevertheless, here is the default that
+ * you can override.
  * ```javascript
  * {
  *  truthy: ['true', '#t'],
@@ -13,7 +17,8 @@
  */
 class SExpr {
   /**
-   * Public field for programmers to store arbitrary data that might be useful for parsing expressions
+   * Public field for programmers to store arbitrary data that might be useful
+   * for parsing expressions
    * @public
    * @default {}
    */
@@ -68,10 +73,12 @@ class SExpr {
     return str
   }
   /**
-   * Parse a S-expression string into a JSON object representing an expression tree
+   * Parse a S-expression string into a JSON object representing an expression
+   * tree
    *
    * @param  {string} str S-expression string
-   * @returns {json} an expression tree in form of list that can include nested lists similar to the structure of the input S-expression
+   * @returns {json} an expression tree in form of list that can include nested
+   * lists similar to the structure of the input S-expression
    * @ref improved on: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
   parse(str) {
@@ -203,11 +210,13 @@ class SExpr {
   }
 
   /**
-   * Check if a node is an expression, and optionally compare to a given expression
+   * Check if a node is an expression, and optionally compare to a given
+   * expression
    *
    * @param {any} e a node to check whether it's an expression
    * @param {json} [s=undefined] optional expression to compare to
-   * @return {boolean} true if it's an expression (and equals the compared expression if provided)
+   * @return {boolean} true if it's an expression (and equals the compared
+   * expression if provided)
    */
   isExpression(e, s = undefined) {
     const isExpr = Array.isArray(e)
@@ -237,7 +246,8 @@ class SExpr {
    *
    * @param {any} e a node to check whether it's a boolean
    * @param {boolean} [b=undefined] optional state to compare to
-   * @return {boolean} true if it's a boolean (and equals the given state if provided)
+   * @return {boolean} true if it's a boolean (and equals the given state if
+   * provided)
    */
   isBoolean(e, b = undefined) {
     if (typeof e === "string" || e instanceof String) {
@@ -262,7 +272,8 @@ class SExpr {
   }
 
   /**
-   * Check if a node is considered truthy. Anything but an explicit false value is truthy.
+   * Check if a node is considered truthy. Anything but an explicit false value
+   * is truthy.
    *
    * @param {any} e a node to check if it's truthy
    * @return {boolean} true if it's truthy
@@ -278,6 +289,11 @@ class SExpr {
     return true
   }
 
+  /**
+   * Check if a node doesn't exist, a.k.a undefined
+   * @param {any} e a node to check if it doesn't exist
+   * @returns  {boolean} true if it doesn't exist (undefined)
+   */
   isMissing(e) {
     return e === undefined
   }
@@ -396,7 +412,7 @@ class SExpr {
   }
 
   /**
-   * Get the first child of a node.
+   * Get the 1st child of a node.
    *
    * @param {any} e a node to get its child
    * @return {any} a child node if exists
@@ -409,7 +425,7 @@ class SExpr {
   }
 
   /**
-   * Get the second child of a node.
+   * Get the 2nd child of a node.
    *
    * @param {any} e a node to get its child
    * @return {any} a child node if exists
@@ -422,7 +438,7 @@ class SExpr {
   }
 
   /**
-   * Get the third child of a node.
+   * Get the 3rd child of a node.
    *
    * @param {any} e a node to get its child
    * @return {any} a child node if exists
@@ -434,6 +450,12 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the 4th child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} a child node if exists
+   */
   fourth(e) {
     if (Array.isArray(e)) {
       return e[3]
@@ -441,6 +463,12 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the 5th child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} a child node if exists
+   */
   fifth(e) {
     if (Array.isArray(e)) {
       return e[4]
@@ -448,6 +476,12 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the 6th child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} a child node if exists
+   */
   sixth(e) {
     if (Array.isArray(e)) {
       return e[5]
@@ -455,6 +489,12 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the 7th child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} a child node if exists
+   */
   seventh(e) {
     if (Array.isArray(e)) {
       return e[6]
@@ -462,6 +502,12 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the 8th child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} a child node if exists
+   */
   eighth(e) {
     if (Array.isArray(e)) {
       return e[7]
@@ -469,6 +515,12 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the 9th child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} a child node if exists
+   */
   ninth(e) {
     if (Array.isArray(e)) {
       return e[8]
@@ -476,6 +528,12 @@ class SExpr {
     return undefined
   }
 
+  /**
+   * Get the 10th child of a node.
+   *
+   * @param {any} e a node to get its child
+   * @return {any} a child node if exists
+   */
   tenth(e) {
     if (Array.isArray(e)) {
       return e[9]
@@ -511,13 +569,16 @@ class SExpr {
   }
 
   /**
-   * evaluate an expression tree into data structures
+   * interpret a parsed expression tree (AST) into data structures in according
+   * to a method of interpretation. The current available method is using
+   * "functional" notation similar to LISP dialects such as CLIPS, Clojure,
+   * Scheme, Racket, etc.
    *
    * @param {*} E
    * @return {*}
    */
 
-  evaluate(expression, mode = null, state = {}) {
+  interpret(expression, mode = null, state = {}) {
     mode = mode || this.evaluator
 
     if (mode.notation === null) {
@@ -533,7 +594,7 @@ class SExpr {
             result.push({ "": [] })
           } else {
             const rest = this.rest(form)
-            result.push({ [head]: this.evaluate(rest, mode, state) })
+            result.push({ [head]: this.interpret(rest, mode, state) })
           }
         } else if (this.isAtom(form)) {
           result.push({ [form]: form }) // atom
