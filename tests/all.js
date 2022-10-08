@@ -132,7 +132,7 @@ test("parsing", function (t) {
   t.pass("parse normally")
 })
 
-test("evaluate", function (t) {
+test("interpret", function (t) {
   const S = new SExpr()
   let testCases = [
     {
@@ -172,6 +172,16 @@ test("evaluate", function (t) {
         "multi\n line\n string",
       ],
     },
+    {
+      note: "multiline string with escaped quotes",
+      input: `(a "multi\n line\n  string \\"with \nquotes\\"")`,
+      expect: [
+        {
+          a: "a",
+        },
+        'multi\n line\n  string "with \nquotes"',
+      ],
+    },
   ]
   t.plan(testCases.length)
   for (let testCase of testCases) {
@@ -183,7 +193,7 @@ test("evaluate", function (t) {
 
     let ast = S.parse(input)
     // console.dir(ast)
-    let output = S.evaluate(ast)
+    let output = S.interpret(ast)
     console.log(
       "Output : " +
         colorize(output, {
@@ -219,6 +229,14 @@ test("comments", function (t) {
       note: "comment syntax in a string",
       input: `(a "; this is still a string" b c)`,
       expect: S.serialize(S.parse(`(a "; this is still a string" b c)`)),
+    },
+
+    {
+      note: "comment syntax in a multiline string",
+      input: `(a "; this is still \n;a \nmultiline ; "string"" b c)`,
+      expect: S.serialize(
+        S.parse(`(a \"; this is still \n;a \nmultiline ; \"string\"\" b c)`)
+      ),
     },
   ]
   t.plan(testCases.length)

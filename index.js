@@ -30,7 +30,7 @@ class SExpr {
 
   lineCommentPrefixes = [";"]
 
-  evaluator = {
+  interpretation = {
     notation: "functional",
     //unwrap_list_with_single_atom: false,
     // atom_as_string: false,
@@ -55,19 +55,35 @@ class SExpr {
     this.nully = options.nully || this.nully
     this.line_comment_prefix =
       options.line_comment_prefix || this.line_comment_prefix
-    this.evaluator = options.evaluator || this.evaluator
+    this.interpretation = options.interpretation || this.interpretation
   }
 
+  /**
+   * strip comments from code in according to the lineCommentPrefixes setting
+   * @param {string} str code which might have line comments 
+   * @returns {string} code without comments
+   */
   stripComments(str) {
     for (let lineCommentPrefix of this.lineCommentPrefixes) {
-      // '(;[^"\\n\\r]*(?:"[^"\\n\\r]*"[^"\\n\\r]*)*[\\r\\n])'
+      // This regex doesn't work with multiline string 
+      // /(;[^"\n\r]*(?:"[^"\n\r]*"[^"\n\r]*)*[\r\n])/
+      // const regex = new RegExp(
+      //   `(${lineCommentPrefix}[^"\\n\\r]*(?:"[^"\\n\\r]*"[^"\\n\\r]*)*[\\r\\n])`,
+      //   "g"
+      // )
+
+      /* 
+        Regex modified from https://stackoverflow.com/a/58784551
+        Only deal with line comments
+        Comments are captured in to group 1, i.e. $1
+        Non-comments are captured in to group 2, i.e. $2
+      */
       const regex = new RegExp(
-        `(${lineCommentPrefix}[^"\\n\\r]*(?:"[^"\\n\\r]*"[^"\\n\\r]*)*[\\r\\n])`,
+        `(${lineCommentPrefix}(?:[^\\\\]|\\\\(?:\\r?\\n)?)*?(?:\\r?\\n|$))|(\"[^\"\\\\]*(?:\\\\[\\S\\s][^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\[\\S\\s][^'\\\\]*)*'|[\\S\\s][^${lineCommentPrefix}\"'\\\\]*)`,
         "g"
-      )
-      // console.dir(regex)
+      )      
       // console.dir(regex.exec(str))
-      str = str.replaceAll(regex, "")
+      str = str.replaceAll(regex, "$2")
       // console.dir(str)
     }
     return str
@@ -579,7 +595,7 @@ class SExpr {
    */
 
   interpret(expression, mode = null, state = {}) {
-    mode = mode || this.evaluator
+    mode = mode || this.interpretation
 
     if (mode.notation === null) {
       return expression
