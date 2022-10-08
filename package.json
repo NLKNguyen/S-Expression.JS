@@ -1,6 +1,6 @@
 {
   "name": "js-sexpr",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "S-Expression Parser, Serializer, and Tree Constructor / Walker Utilities in JavaScript for Browsers and Node.js",
   "main": "index.js",
   "files": [
@@ -31,21 +31,21 @@
     "scheme"
   ],
   "author": "Nikyle Nguyen",
-  "license": "ISC",
+  "license": "Unlicense",
   "bugs": {
     "url": "https://github.com/NLKNguyen/S-Expression.JS/issues"
   },
   "homepage": "https://github.com/NLKNguyen/S-Expression.JS",
   "devDependencies": {
     "browserify": "^17.0.0",
-    "documentation": "^13.1.0",
+    "documentation": "^13.2.5",
     "faucet": "0.0.1",
     "json-colorizer": "^2.2.2",
     "smokestack": "^3.6.0",
     "tap-closer": "^1.0.0",
     "tap-spec": "^5.0.0",
-    "tape": "^5.0.1",
-    "wd": "^1.13.0"
+    "tape": "^5.6.1",
+    "wd": "^1.14.0"
   },
   "dependencies": {}
 }
