@@ -27,10 +27,23 @@
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height=45 />
   </a>
 </p>
- 
-S-Expression Parser, Serializer, and Tree Constructor / Walker Utilities for JavaScript in Browsers and Node.js
 
-Zero-dependencies. Tree structure as plain JSON. Ideal for custom data transfer format and making DSLs.
+S-Expression Parser, Serializer, Translator, and Tree Constructor / Walker Utilities in plain JavaScript for browsers and Node.js with zero dependencies.
+
+*   Parse S-Expression string to Abstract Syntax Tree (AST)
+    *   AST data structure is JSON, ideal for program/data transfer.
+
+*   Customize comment syntax (default is line comment prefix `;`)
+    *   Comments are stripped before parsing, i.e. not included in AST.
+
+*   Serialize AST to S-Expression string
+
+*   Construct AST from JS using helper methods
+
+*   Support JS primitive value types: `boolean`, `numeric`, `null`, and `string` with multi-line support and escaped quotation `\"`
+
+*   Translate AST as functional notation (a.k.a Cambridge Polish Notation), ideal for creating Domain Specific Languages (DSL) with similar syntax to LISP dialects.
+    *   Default transformed format is also JSON which can then be interpreted in any host language.
 
 # ⭐ Overview
 
@@ -70,10 +83,10 @@ See API documentation for more reference.
     <img alt="Twitter: NLKNguyen" src="https://img.shields.io/twitter/follow/NLKNguyen.svg?style=social" />
   </a>
 
--   Website: <https://dephony.com/Nikyle>
--   Twitter: [@NLKNguyen](https://twitter.com/NLKNguyen)
--   Github: [@NLKNguyen](https://github.com/NLKNguyen)
--   LinkedIn: [@NLKNguyen](https://linkedin.com/in/NLKNguyen)
+*   Website: <https://dephony.com/Nikyle>
+*   Twitter: [@NLKNguyen](https://twitter.com/NLKNguyen)
+*   Github: [@NLKNguyen](https://github.com/NLKNguyen)
+*   LinkedIn: [@NLKNguyen](https://linkedin.com/in/NLKNguyen)
 
 # 🤝 Contributing
 
@@ -87,9 +100,9 @@ I create open-source projects on GitHub and continue to develop/maintain as they
 
 I try to respond to users' feedback and feature requests as much as possible. Obviously, this takes a lot of time and efforts (speaking of mental context-switching between different projects and daily work). Therefore, if these projects help you in your work, and you want to encourage me to continue create, here are a few ways you can support me:
 
--   💬 Following my blog and social profiles listed above to help me connect with your network
--   ⭐️ Starring this project and sharing with others as more users come, more great ideas arrive!
--   ☘️ Donating any amount is a great way to help me work on the projects more regularly!
+*   💬 Following my blog and social profiles listed above to help me connect with your network
+*   ⭐️ Starring this project and sharing with others as more users come, more great ideas arrive!
+*   ☘️ Donating any amount is a great way to help me work on the projects more regularly!
 
 <p>
 
@@ -121,74 +134,74 @@ It is "a license with no conditions whatsoever which dedicates works to the publ
 
 ### Table of Contents
 
--   [SExpr](#sexpr)
-    -   [Parameters](#parameters)
-    -   [context](#context)
-    -   [stripComments](#stripcomments)
-        -   [Parameters](#parameters-1)
-    -   [parse](#parse)
-        -   [Parameters](#parameters-2)
-    -   [serialize](#serialize)
-        -   [Parameters](#parameters-3)
-    -   [identifier](#identifier)
-        -   [Parameters](#parameters-4)
-        -   [Examples](#examples)
-    -   [isAtom](#isatom)
-        -   [Parameters](#parameters-5)
-        -   [Examples](#examples-1)
-    -   [isEqual](#isequal)
-        -   [Parameters](#parameters-6)
-    -   [expression](#expression)
-        -   [Parameters](#parameters-7)
-    -   [isExpression](#isexpression)
-        -   [Parameters](#parameters-8)
-    -   [boolean](#boolean)
-        -   [Parameters](#parameters-9)
-    -   [isBoolean](#isboolean)
-        -   [Parameters](#parameters-10)
-    -   [isTruthy](#istruthy)
-        -   [Parameters](#parameters-11)
-    -   [isMissing](#ismissing)
-        -   [Parameters](#parameters-12)
-    -   [null](#null)
-    -   [isNull](#isnull)
-        -   [Parameters](#parameters-13)
-    -   [number](#number)
-        -   [Parameters](#parameters-14)
-    -   [isNumber](#isnumber)
-        -   [Parameters](#parameters-15)
-    -   [string](#string)
-        -   [Parameters](#parameters-16)
-    -   [isString](#isstring)
-        -   [Parameters](#parameters-17)
-    -   [valueOf](#valueof)
-        -   [Parameters](#parameters-18)
-    -   [first](#first)
-        -   [Parameters](#parameters-19)
-    -   [second](#second)
-        -   [Parameters](#parameters-20)
-    -   [third](#third)
-        -   [Parameters](#parameters-21)
-    -   [fourth](#fourth)
-        -   [Parameters](#parameters-22)
-    -   [fifth](#fifth)
-        -   [Parameters](#parameters-23)
-    -   [sixth](#sixth)
-        -   [Parameters](#parameters-24)
-    -   [seventh](#seventh)
-        -   [Parameters](#parameters-25)
-    -   [eighth](#eighth)
-        -   [Parameters](#parameters-26)
-    -   [ninth](#ninth)
-        -   [Parameters](#parameters-27)
-    -   [tenth](#tenth)
-        -   [Parameters](#parameters-28)
-    -   [nth](#nth)
-        -   [Parameters](#parameters-29)
-    -   [rest](#rest)
-        -   [Parameters](#parameters-30)
-    -   [interpret](#interpret)
-        -   [Parameters](#parameters-31)
+*   [SExpr](#sexpr)
+    *   [Parameters](#parameters)
+    *   [context](#context)
+    *   [stripComments](#stripcomments)
+        *   [Parameters](#parameters-1)
+    *   [parse](#parse)
+        *   [Parameters](#parameters-2)
+    *   [serialize](#serialize)
+        *   [Parameters](#parameters-3)
+    *   [identifier](#identifier)
+        *   [Parameters](#parameters-4)
+        *   [Examples](#examples)
+    *   [isAtom](#isatom)
+        *   [Parameters](#parameters-5)
+        *   [Examples](#examples-1)
+    *   [isEqual](#isequal)
+        *   [Parameters](#parameters-6)
+    *   [expression](#expression)
+        *   [Parameters](#parameters-7)
+    *   [isExpression](#isexpression)
+        *   [Parameters](#parameters-8)
+    *   [boolean](#boolean)
+        *   [Parameters](#parameters-9)
+    *   [isBoolean](#isboolean)
+        *   [Parameters](#parameters-10)
+    *   [isTruthy](#istruthy)
+        *   [Parameters](#parameters-11)
+    *   [isMissing](#ismissing)
+        *   [Parameters](#parameters-12)
+    *   [null](#null)
+    *   [isNull](#isnull)
+        *   [Parameters](#parameters-13)
+    *   [number](#number)
+        *   [Parameters](#parameters-14)
+    *   [isNumber](#isnumber)
+        *   [Parameters](#parameters-15)
+    *   [string](#string)
+        *   [Parameters](#parameters-16)
+    *   [isString](#isstring)
+        *   [Parameters](#parameters-17)
+    *   [valueOf](#valueof)
+        *   [Parameters](#parameters-18)
+    *   [first](#first)
+        *   [Parameters](#parameters-19)
+    *   [second](#second)
+        *   [Parameters](#parameters-20)
+    *   [third](#third)
+        *   [Parameters](#parameters-21)
+    *   [fourth](#fourth)
+        *   [Parameters](#parameters-22)
+    *   [fifth](#fifth)
+        *   [Parameters](#parameters-23)
+    *   [sixth](#sixth)
+        *   [Parameters](#parameters-24)
+    *   [seventh](#seventh)
+        *   [Parameters](#parameters-25)
+    *   [eighth](#eighth)
+        *   [Parameters](#parameters-26)
+    *   [ninth](#ninth)
+        *   [Parameters](#parameters-27)
+    *   [tenth](#tenth)
+        *   [Parameters](#parameters-28)
+    *   [nth](#nth)
+        *   [Parameters](#parameters-29)
+    *   [rest](#rest)
+        *   [Parameters](#parameters-30)
+    *   [translate](#translate)
+        *   [Parameters](#parameters-31)
 
 ## SExpr
 
@@ -210,7 +223,7 @@ you can override.
 
 ### Parameters
 
--   `options` **any**  (optional, default `{}`)
+*   `options` **any**  (optional, default `{}`)
 
 ### context
 
@@ -223,7 +236,7 @@ strip comments from code in according to the lineCommentPrefixes setting
 
 #### Parameters
 
--   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** code which might have line comments
+*   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** code which might have line comments
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** code without comments
 
@@ -234,7 +247,7 @@ tree
 
 #### Parameters
 
--   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** S-expression string
+*   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** S-expression string
 
 Returns **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** an expression tree in form of list that can include nested
 lists similar to the structure of the input S-expression
@@ -245,7 +258,7 @@ Serialize an expression tree into an S-expression string
 
 #### Parameters
 
--   `E` **any** 
+*   `E` **any** 
 
 Returns **any** 
 
@@ -255,7 +268,7 @@ Create an identifier symbol
 
 #### Parameters
 
--   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
 
 #### Examples
 
@@ -273,8 +286,8 @@ Check if a node is an identifier, optionally compare to a given name
 
 #### Parameters
 
--   `e` **any** a node to check
--   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** optional id name to compare to (optional, default `undefined`)
+*   `e` **any** a node to check
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** optional id name to compare to (optional, default `undefined`)
 
 #### Examples
 
@@ -295,8 +308,8 @@ Compare whether 2 nodes are identical
 
 #### Parameters
 
--   `a` **any** a node
--   `b` **any** another node to compare to
+*   `a` **any** a node
+*   `b` **any** another node to compare to
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if they are the same
 
@@ -306,7 +319,7 @@ Create an expression node
 
 #### Parameters
 
--   `exps` **rest** optional initialization list of elements
+*   `exps` **rest** optional initialization list of elements
 
 Returns **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** a tree node
 
@@ -317,8 +330,8 @@ expression
 
 #### Parameters
 
--   `e` **any** a node to check whether it's an expression
--   `s` **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** optional expression to compare to (optional, default `undefined`)
+*   `e` **any** a node to check whether it's an expression
+*   `s` **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** optional expression to compare to (optional, default `undefined`)
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's an expression (and equals the compared
 expression if provided)
@@ -329,7 +342,7 @@ Create a boolean node with given state
 
 #### Parameters
 
--   `v` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** boolean value
+*   `v` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** boolean value
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a node with name corresponding to a boolean value
 
@@ -339,8 +352,8 @@ Check if a node is a boolean value, optionally compare to a given state
 
 #### Parameters
 
--   `e` **any** a node to check whether it's a boolean
--   `b` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** optional state to compare to (optional, default `undefined`)
+*   `e` **any** a node to check whether it's a boolean
+*   `b` **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** optional state to compare to (optional, default `undefined`)
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's a boolean (and equals the given state if
 provided)
@@ -352,7 +365,7 @@ is truthy.
 
 #### Parameters
 
--   `e` **any** a node to check if it's truthy
+*   `e` **any** a node to check if it's truthy
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's truthy
 
@@ -362,7 +375,7 @@ Check if a node doesn't exist, a.k.a undefined
 
 #### Parameters
 
--   `e` **any** a node to check if it doesn't exist
+*   `e` **any** a node to check if it doesn't exist
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it doesn't exist (undefined)
 
@@ -378,7 +391,7 @@ Check if a node is null.
 
 #### Parameters
 
--   `e` **any** a node to check if it's null
+*   `e` **any** a node to check if it's null
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's null
 
@@ -388,7 +401,7 @@ Create a number node
 
 #### Parameters
 
--   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** value of the new node
+*   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** value of the new node
 
 Returns **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** a node with number value
 
@@ -398,8 +411,8 @@ Check if a node is a number
 
 #### Parameters
 
--   `e` **any** a node to check if it's a number, optionally compare to a given value
--   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** an optional value to compare to (optional, default `undefined`)
+*   `e` **any** a node to check if it's a number, optionally compare to a given value
+*   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** an optional value to compare to (optional, default `undefined`)
 
 Returns **[boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** true if it's a number (and equals the given value if provided)
 
@@ -409,7 +422,7 @@ Create a string node.
 
 #### Parameters
 
--   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** string value of the node
+*   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** string value of the node
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a node with string value
 
@@ -419,8 +432,8 @@ Check if a node is a string, optionally compare to a given string.
 
 #### Parameters
 
--   `e` **any** a node to check if it's a string
--   `s` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** optional string to compare to (optional, default `undefined`)
+*   `e` **any** a node to check if it's a string
+*   `s` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** optional string to compare to (optional, default `undefined`)
 
 Returns **any** true if it's a string (and equals the given string if provided)
 
@@ -430,7 +443,7 @@ Get a value content of a symbol (not expression).
 
 #### Parameters
 
--   `e` **any** a node to extract value
+*   `e` **any** a node to extract value
 
 Returns **any** value
 
@@ -440,7 +453,7 @@ Get the 1st child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -450,7 +463,7 @@ Get the 2nd child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -460,7 +473,7 @@ Get the 3rd child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -470,7 +483,7 @@ Get the 4th child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -480,7 +493,7 @@ Get the 5th child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -490,7 +503,7 @@ Get the 6th child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -500,7 +513,7 @@ Get the 7th child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -510,7 +523,7 @@ Get the 8th child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -520,7 +533,7 @@ Get the 9th child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -530,7 +543,7 @@ Get the 10th child of a node.
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** a child node if exists
 
@@ -540,8 +553,8 @@ Get the n-th child of a node. Similar to the shorthand `first`, `second`, `third
 
 #### Parameters
 
--   `e` **any** a node to get its child
--   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** position of the child node, starting from 1
+*   `e` **any** a node to get its child
+*   `n` **[number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)** position of the child node, starting from 1
 
 Returns **any** a child node if exists
 
@@ -551,22 +564,22 @@ Skip the first child node and get the rest
 
 #### Parameters
 
--   `e` **any** a node to get its child
+*   `e` **any** a node to get its child
 
 Returns **any** the rest of the nodes or undefined if the input node is not an expression
 
-### interpret
+### translate
 
-interpret a parsed expression tree (AST) into data structures in according
-to a method of interpretation. The current available method is using
+translate a parsed expression tree (AST) into data structures in according
+to a method of translator. The current available method is using
 "functional" notation similar to LISP dialects such as CLIPS, Clojure,
 Scheme, Racket, etc.
 
 #### Parameters
 
--   `expression`  
--   `mode`   (optional, default `null`)
--   `state`   (optional, default `{}`)
--   `E` **any** 
+*   `expression`  
+*   `mode`   (optional, default `null`)
+*   `state`   (optional, default `{}`)
+*   `E` **any** 
 
 Returns **any** 
