@@ -1,7 +1,7 @@
-<h1 align="center">S-Expression in JavaScript</h1>
+<h1 align="center">S-Expression in JavaScript — DSL Maker</h1>
 <p align="center">
   <a href="https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE" target="_blank">
-    <img alt="License: ISC" src="https://img.shields.io/github/license/NLKNguyen/S-Expression.JS.svg?color=blueviolet" />
+    <img alt="License: Unlicense" src="https://img.shields.io/github/license/NLKNguyen/S-Expression.JS.svg?color=blueviolet" />
 
   </a>
 
