@@ -132,7 +132,7 @@ test("parsing", function (t) {
   t.pass("parse normally")
 })
 
-test("interpret", function (t) {
+test("translate", function (t) {
   const S = new SExpr()
   let testCases = [
     {
@@ -193,7 +193,7 @@ test("interpret", function (t) {
 
     let ast = S.parse(input)
     // console.dir(ast)
-    let output = S.interpret(ast)
+    let output = S.translate(ast)
     console.log(
       "Output : " +
         colorize(output, {

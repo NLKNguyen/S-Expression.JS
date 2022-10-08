@@ -30,7 +30,7 @@ class SExpr {
 
   lineCommentPrefixes = [";"]
 
-  interpretation = {
+  translator = {
     notation: "functional",
     //unwrap_list_with_single_atom: false,
     // atom_as_string: false,
@@ -55,7 +55,7 @@ class SExpr {
     this.nully = options.nully || this.nully
     this.line_comment_prefix =
       options.line_comment_prefix || this.line_comment_prefix
-    this.interpretation = options.interpretation || this.interpretation
+    this.translator = options.translator || this.translator
   }
 
   /**
@@ -585,8 +585,8 @@ class SExpr {
   }
 
   /**
-   * interpret a parsed expression tree (AST) into data structures in according
-   * to a method of interpretation. The current available method is using
+   * translate a parsed expression tree (AST) into data structures in according
+   * to a method of translator. The current available method is using
    * "functional" notation similar to LISP dialects such as CLIPS, Clojure,
    * Scheme, Racket, etc.
    *
@@ -594,8 +594,8 @@ class SExpr {
    * @return {*}
    */
 
-  interpret(expression, mode = null, state = {}) {
-    mode = mode || this.interpretation
+  translate(expression, mode = null, state = {}) {
+    mode = mode || this.translator
 
     if (mode.notation === null) {
       return expression
@@ -610,7 +610,7 @@ class SExpr {
             result.push({ "": [] })
           } else {
             const rest = this.rest(form)
-            result.push({ [head]: this.interpret(rest, mode, state) })
+            result.push({ [head]: this.translate(rest, mode, state) })
           }
         } else if (this.isAtom(form)) {
           result.push({ [form]: form }) // atom
