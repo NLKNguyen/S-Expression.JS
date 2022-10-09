@@ -1,4 +1,4 @@
-<h1 align="center">S-Expression in JavaScript — DSL Maker</h1>
+<h1 align="center">S-Expression in JavaScript — DSL Toolkit</h1>
 <p align="center">
   <a href="https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE" target="_blank">
     <img alt="License: Unlicense" src="https://img.shields.io/github/license/NLKNguyen/S-Expression.JS.svg?color=blueviolet" />
@@ -30,19 +30,21 @@
 
 S-Expression Parser, Serializer, Translator, and Tree Constructor / Walker Utilities in plain JavaScript for browsers and Node.js with zero dependencies.
 
+**Feature Highlights**
+
 *   Parse S-Expression string to Abstract Syntax Tree (AST)
-    *   AST data structure is JSON, ideal for program/data transfer.
+    *   AST data structure is JSON (ideal for program/data transfer or interpretation.)
 
 *   Customize comment syntax (default is line comment prefix `;`)
     *   Comments are stripped before parsing, i.e. not included in AST.
 
 *   Serialize AST to S-Expression string
 
-*   Construct AST from JS using helper methods
+*   Construct and traverse AST using helper methods
 
-*   Support JS primitive value types: `boolean`, `numeric`, `null`, and `string` with multi-line support and escaped quotation `\"`
+*   Support JSON-compatible value types: `boolean`, `numeric`, `null`, and `string` with multi-line support and escaped quotation `\"`
 
-*   Translate AST as functional notation (a.k.a Cambridge Polish Notation), ideal for creating Domain Specific Languages (DSL) with similar syntax to LISP dialects.
+*   Translate AST as functional notation (a.k.a Cambridge Polish Notation), convenient for making Domain Specific Languages (DSL) using similar syntax to LISP dialects (CLIPS, Clojure, Scheme, Racket, etc.)
     *   Default transformed format is also JSON which can then be interpreted in any host language.
 
 # ⭐ Overview
@@ -64,7 +66,8 @@ npm install --save js-sexpr
 <a href="https://js-sexpr.dephony.com/" title="Read API documentation">
   <img src="https://img.shields.io/badge/API%20Documentation-HTML-blue.svg" alt="API documentation link" height=30/>
 </a>
-<p></p>
+
+API documentation is also included down below.
 <p></p>
 
 # 🚀 Quick start
