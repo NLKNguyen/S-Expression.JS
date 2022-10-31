@@ -1,4 +1,4 @@
-<h1 align="center">S-Expression in JavaScript — DSL Toolkit</h1>
+<h1 align="center">S-Expression in JavaScript — DSL Maker's Toolkit</h1>
 <p align="center">
   <a href="https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE" target="_blank">
     <img alt="License: Unlicense" src="https://img.shields.io/github/license/NLKNguyen/S-Expression.JS.svg?color=blueviolet" />
@@ -28,26 +28,30 @@
   </a>
 </p>
 
-S-Expression Parser, Serializer, Translator, and Tree Constructor / Walker Utilities in plain JavaScript for browsers and Node.js with zero dependencies.
+S-Expression Parser, Serializer, Interpreter, and Tree Constructor / Walker Utilities in plain JavaScript for browsers and Node.js with zero dependencies.
 
 **Feature Highlights**
 
 *   Parse S-Expression string to Abstract Syntax Tree (AST)
     *   AST data structure is JSON (ideal for program/data transfer or interpretation.)
 
-*   Customize comment syntax (default is line comment prefix `;`)
-    *   Comments are stripped before parsing, i.e. not included in AST.
+*   Construct and traverse AST using helper methods
 
 *   Serialize AST to S-Expression string
 
-*   Construct and traverse AST using helper methods
+*   Support line comment prefix `;` and block comment guards `#|`, `|#`
+    *   Comments are stripped in the parsing process therefore not included in AST.
 
-*   Support JSON-compatible value types: `boolean`, `numeric`, `null`, and `string` with multi-line support and escaped quotation `\"`
+*   Support JSON-compatible value types: `boolean`, `number`, `null`, and `string` with multi-line support and escaped quotation `\"`
 
-*   Translate AST as functional notation (a.k.a Cambridge Polish Notation), convenient for making Domain Specific Languages (DSL) using similar syntax to LISP dialects (CLIPS, Clojure, Scheme, Racket, etc.)
-    *   Default transformed format is also JSON which can then be interpreted in any host language.
+*   Interpret AST as functional notation (a.k.a Cambridge Polish Notation), convenient for making Domain Specific Languages (DSL) that have similar syntax to LISP dialects (CLIPS, Clojure, Scheme, Racket, etc.)
+    *   JSON `array` and `object` types are used to represent forms.
 
-# ⭐ Overview
+    *   Define your custom handlers in JS to evaluate expressions in a similar concept like YACC/Bison and ANTLR
+
+    *   The default transformed format is also JSON, so if you like, you can defer to another language for the evaluation part. Since this library is self-contained, and because JavaScript is widely supported, you can easily interop it with a sandbox in your application such that you retrieve just the JSON output to evaluate using features available in your host language.
+
+# ⭐ Background
 
 <p>S-Expression is surprisingly a powerful and very simple concept to represent both data and function with minimalist syntax. It was popularized by LISP (a classic programming language that was used heavily in AI research) in the very beginning of computer science, circa 1960, and yet S-Expression is still one of the best ideas around due to its simplicity and extensibility. It contains only lists containing symbols and nested lists, and it's totally up to the programmers to make the meanings out of those symbols and their arrangements. S-Expression is a good choice for many use cases ranging from command format, config file format, small domain-specific language to a full-blown programming language.</p>
 
@@ -55,7 +59,7 @@ S-Expression Parser, Serializer, Translator, and Tree Constructor / Walker Utili
 
 <p>These are some of the reasons why there are so many popular languages based on S-Expression such as Lisp, Clojure, Scheme, Racket, and their families of languages. More recently, WebAssembly, the 4th language of the Web, also embraces S-Expression for its textual form. Once you're familiar with S-Expression and its flexibility, it becomes useful knowledge in your development toolkit and can come in handy as an obvious choice over any ad-hoc input parsing that often comes up in your career as a developer.</p>
 
-<p>This project makes working with S-Expression in JavaScript really easy.</p>
+<p>This project makes working with S-Expression in JavaScript really easy, and the author's intention is to make this library a toolkit for creating domain specific languages that boost productivity and help simplify the coding interface for less technical users.</p>
 
 # 🛠️ Installation
 
@@ -63,16 +67,38 @@ S-Expression Parser, Serializer, Translator, and Tree Constructor / Walker Utili
 npm install --save js-sexpr
 ```
 
+<!-- 
 <a href="https://js-sexpr.dephony.com/" title="Read API documentation">
   <img src="https://img.shields.io/badge/API%20Documentation-HTML-blue.svg" alt="API documentation link" height=30/>
-</a>
+</a> -->
 
-API documentation is also included down below.
+See API documentation included below.
+
 <p></p>
+
+# Test
+
+Run all test cases
+
+```shell
+npm run test
+```
+
+Test a specific set of test cases
+
+```shell
+npx tape ./tests/basic.js | npx tap-spec
+
+npx tape ./tests/interpret.js | npx tap-spec
+```
+
+Piping to `tap-spec` is optional, but it makes the output easier to read.
 
 # 🚀 Quick start
 
-TODO: simple parsing example
+TODO: simple parsing example and custom DSL example
+
+Please look at the unit tests for use cases in the mean time.
 
 See API documentation for more reference.
 
@@ -140,70 +166,70 @@ It is "a license with no conditions whatsoever which dedicates works to the publ
 *   [SExpr](#sexpr)
     *   [Parameters](#parameters)
     *   [context](#context)
-    *   [stripComments](#stripcomments)
+    *   [interpret](#interpret)
         *   [Parameters](#parameters-1)
-    *   [parse](#parse)
+    *   [stripComments](#stripcomments)
         *   [Parameters](#parameters-2)
-    *   [serialize](#serialize)
+    *   [parse](#parse)
         *   [Parameters](#parameters-3)
-    *   [identifier](#identifier)
+    *   [serialize](#serialize)
         *   [Parameters](#parameters-4)
+    *   [identifier](#identifier)
+        *   [Parameters](#parameters-5)
         *   [Examples](#examples)
     *   [isAtom](#isatom)
-        *   [Parameters](#parameters-5)
+        *   [Parameters](#parameters-6)
         *   [Examples](#examples-1)
     *   [isEqual](#isequal)
-        *   [Parameters](#parameters-6)
-    *   [expression](#expression)
         *   [Parameters](#parameters-7)
-    *   [isExpression](#isexpression)
+    *   [expression](#expression)
         *   [Parameters](#parameters-8)
-    *   [boolean](#boolean)
+    *   [isExpression](#isexpression)
         *   [Parameters](#parameters-9)
-    *   [isBoolean](#isboolean)
+    *   [boolean](#boolean)
         *   [Parameters](#parameters-10)
-    *   [isTruthy](#istruthy)
+    *   [isBoolean](#isboolean)
         *   [Parameters](#parameters-11)
-    *   [isMissing](#ismissing)
+    *   [isTruthy](#istruthy)
         *   [Parameters](#parameters-12)
+    *   [isMissing](#ismissing)
+        *   [Parameters](#parameters-13)
     *   [null](#null)
     *   [isNull](#isnull)
-        *   [Parameters](#parameters-13)
-    *   [number](#number)
         *   [Parameters](#parameters-14)
-    *   [isNumber](#isnumber)
+    *   [number](#number)
         *   [Parameters](#parameters-15)
-    *   [string](#string)
+    *   [isNumber](#isnumber)
         *   [Parameters](#parameters-16)
-    *   [isString](#isstring)
+    *   [string](#string)
         *   [Parameters](#parameters-17)
-    *   [valueOf](#valueof)
+    *   [isString](#isstring)
         *   [Parameters](#parameters-18)
-    *   [first](#first)
+    *   [valueOf](#valueof)
         *   [Parameters](#parameters-19)
-    *   [second](#second)
+    *   [first](#first)
         *   [Parameters](#parameters-20)
-    *   [third](#third)
+    *   [second](#second)
         *   [Parameters](#parameters-21)
-    *   [fourth](#fourth)
+    *   [third](#third)
         *   [Parameters](#parameters-22)
-    *   [fifth](#fifth)
+    *   [fourth](#fourth)
         *   [Parameters](#parameters-23)
-    *   [sixth](#sixth)
+    *   [fifth](#fifth)
         *   [Parameters](#parameters-24)
-    *   [seventh](#seventh)
+    *   [sixth](#sixth)
         *   [Parameters](#parameters-25)
-    *   [eighth](#eighth)
+    *   [seventh](#seventh)
         *   [Parameters](#parameters-26)
-    *   [ninth](#ninth)
+    *   [eighth](#eighth)
         *   [Parameters](#parameters-27)
-    *   [tenth](#tenth)
+    *   [ninth](#ninth)
         *   [Parameters](#parameters-28)
-    *   [nth](#nth)
+    *   [tenth](#tenth)
         *   [Parameters](#parameters-29)
-    *   [rest](#rest)
+    *   [nth](#nth)
         *   [Parameters](#parameters-30)
-    *   [translate](#translate)
+    *   [rest](#rest)
         *   [Parameters](#parameters-31)
 
 ## SExpr
@@ -233,6 +259,23 @@ you can override.
 Public field for programmers to store arbitrary data that might be useful
 for parsing expressions
 
+### interpret
+
+interpret a parsed expression tree (AST) into data structures in according
+to a method of defaultMode. The current available method is using
+"functional" notation similar to LISP dialects such as CLIPS, Clojure,
+Scheme, Racket, etc.
+
+#### Parameters
+
+*   `expression`  
+*   `context`   (optional, default `{}`)
+*   `state`   (optional, default `{scoped:[],globals:{}}`)
+*   `entity`   (optional, default `this.ROOT`)
+*   `E` **any** 
+
+Returns **any** 
+
 ### stripComments
 
 strip comments from code in according to the lineCommentPrefixes setting
@@ -261,7 +304,9 @@ Serialize an expression tree into an S-expression string
 
 #### Parameters
 
-*   `E` **any** 
+*   `ast` **any** 
+*   `opts`   (optional, default `{rootBrackets:true}`)
+*   `level`   (optional, default `0`)
 
 Returns **any** 
 
@@ -570,19 +615,3 @@ Skip the first child node and get the rest
 *   `e` **any** a node to get its child
 
 Returns **any** the rest of the nodes or undefined if the input node is not an expression
-
-### translate
-
-translate a parsed expression tree (AST) into data structures in according
-to a method of translator. The current available method is using
-"functional" notation similar to LISP dialects such as CLIPS, Clojure,
-Scheme, Racket, etc.
-
-#### Parameters
-
-*   `expression`  
-*   `mode`   (optional, default `null`)
-*   `state`   (optional, default `{}`)
-*   `E` **any** 
-
-Returns **any** 

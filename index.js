@@ -16,76 +16,294 @@
  * ```
  */
 class SExpr {
-  /**
-   * Public field for programmers to store arbitrary data that might be useful
-   * for parsing expressions
-   * @public
-   * @default {}
-   */
-  context = {}
+  logVerbose = null
+  logTrace = null
 
-  truthy = ["true", "#t"]
-  falsy = ["false", "#f"]
-  nully = ["null", "#nil"]
+  // defaultMode = {
+  //   notation: "functional",
+  //   normalizeAtom: (e) => e.toUpperCase(), // or null
 
-  lineCommentPrefixes = [";"]
+  //   //unwrap_list_with_single_atom: false,
+  //   // atom_as_string: false,
+  //   // right_associations: ["'"],
+  //   // entitys: {
+  //   //   "'": {
+  //   //     notation: null,
+  //   //     transform: (components) => components,
+  //   //     apply: (components) => components
+  //   //   },
+  //   // },
+  //   // apply: (components) => components,
+  // }
 
-  translator = {
-    notation: "functional",
-    //unwrap_list_with_single_atom: false,
-    // atom_as_string: false,
-    // right_associations: ["'"],
-    // handlers: {
-    //   "'": {
-    //     notation: null,
-    //     transform: (forms) => forms,
-    //     apply: (forms) => forms
-    //   },
-    // },
-    // apply: (forms) => forms,
+  Type = {
+    Atom: null,
   }
-  /**
 
+  /**
    *
-   * @param {*} [options={}]  
+   * @param {*} [options={}]
    */
   constructor(options = {}) {
+    // /**
+    //  * Public field for programmers to store arbitrary data that might be useful
+    //  * for parsing expressions
+    //  * @public
+    //  * @default {}
+    //  */
+    // this.context = {}
+
+    this.truthy = ["true", "#t"] // => true
     this.truthy = options.truthy || this.truthy
+
+    this.falsy = ["false", "#f"] // => false
     this.falsy = options.falsy || this.falsy
+
+    this.nully = ["null", "#nil"] // => null
     this.nully = options.nully || this.nully
-    this.line_comment_prefix =
-      options.line_comment_prefix || this.line_comment_prefix
-    this.translator = options.translator || this.translator
+
+    // this.defaultMode = options.defaultMode || this.defaultMode
+
+    this.ATOM = "[ ATOM ]"
+    this.BOOLEAN = "[ BOOLEAN ]"
+    this.NUMBER = "[ NUMBER ]"
+    this.STRING = "[ STRING ]"
+    this.EMPTY = "[ EMPTY ]"
+    this.FUNCTION = "[ FUNCTION ]"
+    this.NULL = "[ NULL ]"
+    this.ROOT = "[ ROOT ]"
+
+    this.defaults = {
+      [this.ATOM]: {
+        evaluate: async (data, context, state, entity) => {
+          return { [entity]: data }
+        },
+      },
+      [this.STRING]: {
+        evaluate: async (data, context, state, entity) => {
+          return data[entity]
+        },
+      },
+      [this.NUMBER]: {
+        evaluate: async (data, context, state, entity) => {
+          return data[entity]
+        },
+      },
+      [this.BOOLEAN]: {
+        evaluate: async (data, context, state, entity) => {
+          return data[entity]
+        },
+      },
+      [this.NULL]: {
+        evaluate: async (data, context, state, entity) => {
+          // console.data[entity]
+          // process.exit()
+          return data[entity]
+        },
+      },
+
+      [this.FUNCTION]: {
+        evaluate: async (data, context, state, entity) => {
+          return {
+            [entity]: data,
+          }
+        },
+      },
+    }
+    // console.dir(this.defaults)
+  }
+
+  findContext(context, name, base) {
+    const handlers = context.handlers
+    const defaults = context.defaults
+    if (base === undefined) {
+      base = name
+    }
+    let ctx
+    if (handlers) {
+      ctx = handlers[name] || handlers[base]
+    }
+    if (defaults) {
+      ctx = ctx || defaults[name] || defaults[base]
+    }
+
+    ctx = ctx || {}
+
+    return ctx
+  }
+
+  /**
+   * interpret a parsed expression tree (AST) into data structures in according
+   * to a method of defaultMode. The current available method is using
+   * "functional" notation similar to LISP dialects such as CLIPS, Clojure,
+   * Scheme, Racket, etc.
+   *
+   * @param {*} E
+   * @return {*}
+   */
+
+  async interpret(
+    expression,
+    context = {},
+    state = { scoped: [], globals: {} },
+    entity = this.ROOT
+  ) {
+    if (context.defaults === undefined) {
+      context.defaults = this.defaults
+    }
+
+    if (context.notation === null) {
+      return expression
+    }
+
+    // if (!context.notation || context.notation === "functional") {
+    if (context.notation === undefined) {
+      const components = []
+      for (let e of expression) {
+        if (this.isExpression(e)) {
+          const entity = this.first(e)
+
+          if (this.isMissing(entity)) {
+            // components.push({ "": [] })
+            components.push({})
+          } else if (this.isAtom(entity)) {
+            // console.dir(entity)
+            // process.exit()
+            const handler = entity.toUpperCase()
+            const handlerContext = this.findContext(
+              context,
+              handler,
+              this.FUNCTION
+            )
+
+            if (handlerContext.defaults === undefined) {
+              handlerContext.defaults = context.defaults
+            }
+            const handlerState = { ...state }
+            handlerState.scoped = [...state.scoped]
+            handlerState.scoped.push({})
+
+            // console.log(`rest = ${JSON.stringify(this.rest(e))}`)
+            const result = await this.interpret(
+              this.rest(e),
+              handlerContext,
+              handlerState,
+              entity
+            )
+            // console.dir(result)
+            components.push(result)
+            // TODO: validate parameters using avj
+            // components.push({
+            //   [name]: params,
+            // })
+          } else {
+            throw new Error(
+              `Invalid AST for functional notation ${JSON.stringify(e)}`
+            )
+          }
+        } else if (this.isAtom(e)) {
+          const handlerContext = this.findContext(context, this.ATOM)
+          if (handlerContext.evaluate) {
+            let evaluated = await handlerContext.evaluate(
+              e,
+              context,
+              state,
+              this.ATOM
+            )
+            components.push(evaluated)
+          } else {
+            throw new Error("can't evaluate " + JSON.stringify(e))
+            // components.push(entity)
+          }
+          // components.push({ [this.ATOM]: e })
+        } else {
+          let entity = ""
+          if (this.isNumber(e)) {
+            entity = this.NUMBER
+          } else if (this.isBoolean(e)) {
+            entity = this.BOOLEAN
+          } else if (this.isString(e)) {
+            entity = this.STRING
+          } else if (this.isNull(e)) {
+            entity = this.NULL
+          } else {
+            throw new Error("unsupported value type: " + JSON.stringify(e))
+          }
+
+          const handlerContext = this.findContext(context, entity)
+
+          const value = { [entity]: this.valueOf(e) }
+          if (handlerContext.evaluate) {
+            const evaluated = await handlerContext.evaluate(
+              value,
+              context,
+              state,
+              entity
+            )
+            components.push(evaluated) // normal form / self evaluated, e.g. string, number, boolean
+          } else {
+            throw new Error("can't evaluate " + JSON.stringify(value))
+            // components.push(entity)
+          }
+          //
+          // components.push({ [key]: this.valueOf(e) }) // normal form / self evaluated, e.g. string, number, boolean
+        }
+      }
+
+      if (context.evaluate) {
+        // console.dir({
+        //   entity,
+        //   components,
+        // })
+        // console.dir(components)
+
+        return await context.evaluate(components, context, state, entity)
+      } else {
+        // console.dir({
+        //   entity,
+        //   components,
+        // })
+        const handlerContext = this.findContext(context, entity, this.FUNCTION)
+
+        if (handlerContext.evaluate) {
+          // let entity = {[entity]: components}
+          // console.log(defaultMode.evaluate.toString())
+          return await handlerContext.evaluate(
+            components,
+            context,
+            state,
+            entity
+          )
+        } else {
+          throw new Error(
+            `can't evaluate '${entity}' with arguments ${JSON.stringify(
+              components
+            )}`
+          )
+        }
+      }
+    } else {
+      throw new Error("unsupported notation: " + context.notation)
+    }
   }
 
   /**
    * strip comments from code in according to the lineCommentPrefixes setting
-   * @param {string} str code which might have line comments 
+   * @param {string} str code which might have line comments
    * @returns {string} code without comments
    */
   stripComments(str) {
-    for (let lineCommentPrefix of this.lineCommentPrefixes) {
-      // This regex doesn't work with multiline string 
-      // /(;[^"\n\r]*(?:"[^"\n\r]*"[^"\n\r]*)*[\r\n])/
-      // const regex = new RegExp(
-      //   `(${lineCommentPrefix}[^"\\n\\r]*(?:"[^"\\n\\r]*"[^"\\n\\r]*)*[\\r\\n])`,
-      //   "g"
-      // )
-
-      /* 
-        Regex modified from https://stackoverflow.com/a/58784551
-        Only deal with line comments
-        Comments are captured in to group 1, i.e. $1
-        Non-comments are captured in to group 2, i.e. $2
-      */
-      const regex = new RegExp(
-        `(${lineCommentPrefix}(?:[^\\\\]|\\\\(?:\\r?\\n)?)*?(?:\\r?\\n|$))|(\"[^\"\\\\]*(?:\\\\[\\S\\s][^\"\\\\]*)*\"|'[^'\\\\]*(?:\\\\[\\S\\s][^'\\\\]*)*'|[\\S\\s][^${lineCommentPrefix}\"'\\\\]*)`,
-        "g"
-      )      
-      // console.dir(regex.exec(str))
-      str = str.replaceAll(regex, "$2")
-      // console.dir(str)
-    }
+    // (#\|[^|]*\|+(?:[^#|][^|]*\|+)*#|;[^"\n\r]*(?:"[^"\n\r]*"[^"\n\r]*)*[\r\n])|("[^"\\]*(?:\\[\S\s][^"\\]*)*"|'[^'\\]*(?:\\[\S\s][^'\\]*)*'|[\S\s][^;#"'\\]*)
+    /*
+      Regex modified from https://stackoverflow.com/a/58784551    
+      Comments are captured into group 1, i.e. $1
+      Non-comments are captured into group 2, i.e. $2
+    */
+    const regex = new RegExp(
+      /(#\|[^|]*\|+(?:[^#|][^|]*\|+)*#|;[^"\n\r]*(?:"[^"\n\r]*"[^"\n\r]*)*[\r\n])|("[^"\\]*(?:\\[\S\s][^"\\]*)*"|'[^'\\]*(?:\\[\S\s][^'\\]*)*'|[\S\s][^;#"'\\]*)/g
+    )
+    // console.dir(regex.exec(str))
+    str = str.replaceAll(regex, "$2")
     return str
   }
   /**
@@ -129,13 +347,23 @@ class SExpr {
   /**
    * Serialize an expression tree into an S-expression string
    *
-   * @param {*} E
+   * @param {*} ast
    * @return {*}
    */
-  serialize(E) {
-    let s = ""
-    for (let i = 0, e = E.length; i < e; i++) s += (s ? " " : "") + E[i]
-    return "(" + s + ")"
+  serialize(ast, opts = { rootBrackets: true }, level = 0) {
+    let forms = []
+    for (let e of ast) {
+      if (this.isExpression(e)) {
+        forms.push(this.serialize(e, opts, level + 1))
+      } else {
+        forms.push(e)
+      }
+    }
+    if (level === 0 && !opts.rootBrackets) {
+      return forms.join(" ")
+    } else {
+      return `(${forms.join(" ")})`
+    }
   }
 
   /**
@@ -170,7 +398,8 @@ class SExpr {
       !this.isExpression(e) &&
       !this.isNumber(e) &&
       !this.isString(e) &&
-      !this.isBoolean(e)
+      !this.isBoolean(e) &&
+      !this.isNull(e)
 
     if (id) {
       return isId && e === id
@@ -582,45 +811,6 @@ class SExpr {
       return e.slice(1)
     }
     return undefined
-  }
-
-  /**
-   * translate a parsed expression tree (AST) into data structures in according
-   * to a method of translator. The current available method is using
-   * "functional" notation similar to LISP dialects such as CLIPS, Clojure,
-   * Scheme, Racket, etc.
-   *
-   * @param {*} E
-   * @return {*}
-   */
-
-  translate(expression, mode = null, state = {}) {
-    mode = mode || this.translator
-
-    if (mode.notation === null) {
-      return expression
-    }
-
-    if (mode.notation === "functional") {
-      const result = []
-      for (let form of expression) {
-        if (this.isExpression(form)) {
-          const head = this.first(form)
-          if (this.isMissing(head)) {
-            result.push({ "": [] })
-          } else {
-            const rest = this.rest(form)
-            result.push({ [head]: this.translate(rest, mode, state) })
-          }
-        } else if (this.isAtom(form)) {
-          result.push({ [form]: form }) // atom
-        } else {
-          result.push(this.valueOf(form)) // normal form / self evaluated, e.g. string, number, boolean
-        }
-      }
-      return result
-    }
-    throw new Error("unsupported notation: " + mode.notation)
   }
 }
 
