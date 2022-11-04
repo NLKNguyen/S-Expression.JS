@@ -1,6 +1,6 @@
 {
-  "name": "js-sexpr",
-  "version": "0.4.0",
+  "name": "s-expression.js",
+  "version": "0.5.0",
   "description": "S-Expression Parser, Serializer, and Tree Constructor / Walker Utilities in JavaScript for Browsers and Node.js",
   "main": "index.js",
   "files": [
@@ -11,9 +11,7 @@
     "publish": "npm publish --access public",
     "test": "tape ./tests/*.js | tap-spec",
     "test-browser": "browserify ./tests/all.js | tap-closer | smokestack -b chrome | tap-spec",
-    "docs-readme": "documentation readme index.js --section=API",
-    "docs-html": "documentation build index.js -f html --config ./documentation.yml --theme ../S-Expression.JSDOC/src/default_theme/  -o ../S-Expression.JSDOC/public",
-    "docs-md": "documentation build index.js -f md"
+    "update-readme-api": "documentation readme index.js --section=API"    
   },
   "repository": {
     "type": "git",
