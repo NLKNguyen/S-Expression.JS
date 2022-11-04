@@ -28,43 +28,81 @@
   </a>
 </p>
 
-S-Expression Parser, Serializer, Interpreter, and Tree Constructor / Walker Utilities in plain JavaScript for browsers and Node.js with zero dependencies.
+S-Expression Parser, Serializer, Interpreter, and Tree Constructor / Walker Utilities in plain JavaScript for browsers and Node.js with <u>zero dependencies</u>.
 
 **Feature Highlights**
 
 *   Parse S-Expression string to Abstract Syntax Tree (AST)
-    *   AST data structure is JSON (ideal for program/data transfer or interpretation.)
+    *   AST data structure is JSON (ideal for program/data transfer or
+        interpretation).
 
 *   Construct and traverse AST using helper methods
 
 *   Serialize AST to S-Expression string
 
-*   Support line comment prefix `;` and block comment guards `#|`, `|#`
-    *   Comments are stripped in the parsing process therefore not included in AST.
+*   Support LISP-like comment syntax: line comment prefix `;` and block comment
+    guards `#|`, `|#`
+    *   Comments are stripped in the parsing process and therefore not included
+        in AST.
 
-*   Support JSON-compatible value types: `boolean`, `number`, `null`, and `string` with multi-line support and escaped quotation `\"`
+*   Support JSON-compatible value types: `boolean`, `number`, `null`, and
+    `string` with multi-line support and escaped quotation `\"`
 
-*   Interpret AST as functional notation (a.k.a Cambridge Polish Notation), convenient for making Domain Specific Languages (DSL) that have similar syntax to LISP dialects (CLIPS, Clojure, Scheme, Racket, etc.)
-    *   JSON `array` and `object` types are used to represent forms.
+*   Interpret AST as LISP-like functional notation (a.k.a Cambridge Polish
+    Notation), convenient for making Domain Specific Languages (DSLs) that have
+    similar syntax to LISP dialects (CLIPS, Clojure, Scheme, Racket, etc.).
 
-    *   Define your custom handlers in JS to evaluate expressions in a similar concept like YACC/Bison and ANTLR
+    *   Define your custom handlers in JS to evaluate expressions in a similar
+        concept like in YACC/Bison or ANTLR but without the out-of-source file
+        for code generation. With S-Expression.js, the minimum grammar is
+        presumed to be LISP-like, so the parsing is taken care of, and all you
+        just need to do is to define the expression evaluators which can be done
+        all in-source.
 
-    *   The default transformed format is also JSON, so if you like, you can defer to another language for the evaluation part. Since this library is self-contained, and because JavaScript is widely supported, you can easily interop it with a sandbox in your application such that you retrieve just the JSON output to evaluate using features available in your host language.
+    *   The default transformed format is also JSON, so if you like, you can
+        defer to another language for the evaluation part. Since this library is
+        self-contained, and because JavaScript is widely supported, you can
+        easily interop it with a sandbox in your application such that you
+        retrieve just the JSON output to evaluate using features available in
+        your host language.
+
+    *   JSON `array` and `object` types are used to represent function forms.
+
+**TL;DR**: jump to [Quick Start]() and hack away
 
 # ⭐ Background
 
-<p>S-Expression is surprisingly a powerful and very simple concept to represent both data and function with minimalist syntax. It was popularized by LISP (a classic programming language that was used heavily in AI research) in the very beginning of computer science, circa 1960, and yet S-Expression is still one of the best ideas around due to its simplicity and extensibility. It contains only lists containing symbols and nested lists, and it's totally up to the programmers to make the meanings out of those symbols and their arrangements. S-Expression is a good choice for many use cases ranging from command format, config file format, small domain-specific language to a full-blown programming language.</p>
+<p>S-Expression is surprisingly a powerful and very simple concept to represent both data and function with minimalist syntax. It was popularized by LISP (a classic programming language that was used heavily in AI research) at the very beginning of computer science, circa 1960, and yet S-Expression is still one of the best ideas around due to its simplicity and extensibility. It contains only lists containing symbols and nested lists, and it's totally up to the programmers to make the meanings out of those symbols and their arrangements. S-Expression is a good choice for many use cases ranging from command format, config file format, small domain-specific language, or full-blown programming language.</p>
 
-<p>S-Expression is so minimal that it resembles an abstract syntax tree (AST), which is the underlying representation of many high-level programming languages when their syntactic sugar code is parsed through the typical language grammars. This appeals to many language designers because they can bypass the typical grammar design in forms such as BNF and instead focus on the core syntax tree to accomplish their main goals for the languages, and consequently providing a native/in-language way to manipulate the syntax tree thus enables more dynamic capability and easier metaprogramming.</p>
+<p>S-Expression is so minimal that it resembles an abstract syntax tree (AST), which is the underlying representation of many high-level programming languages when their syntactic sugar code is parsed through the typical language grammars. This appeals to many language designers because they can bypass the typical grammar design in forms such as BNF and instead focus on the core syntax tree to accomplish their main goals for the languages, consequently providing a native/in-language way to manipulate the syntax tree thus enables more dynamic capability and easier meta-programming.</p>
 
 <p>These are some of the reasons why there are so many popular languages based on S-Expression such as Lisp, Clojure, Scheme, Racket, and their families of languages. More recently, WebAssembly, the 4th language of the Web, also embraces S-Expression for its textual form. Once you're familiar with S-Expression and its flexibility, it becomes useful knowledge in your development toolkit and can come in handy as an obvious choice over any ad-hoc input parsing that often comes up in your career as a developer.</p>
 
-<p>This project makes working with S-Expression in JavaScript really easy, and the author's intention is to make this library a toolkit for creating domain specific languages that boost productivity and help simplify the coding interface for less technical users.</p>
+<p>This project makes working with S-Expression in JavaScript easy, and the author's intention is to make this library a toolkit for creating domain-specific languages that boost productivity and help simplify the coding interface for less technical users.</p>
+
+# 💡 Why make domain-specific languages?
+
+All usual reasons for DSLs apply. Here are just a few use cases:
+
+*   Custom data format that is more compact and easier to write than the target
+    format schema
+
+*   Custom command format for system interaction or utility (e.g. REPL shell, chat bot command, etc.)
+
+*   Abstract away low-level/repetitive JS code so that developers/users can write
+    in a high-level language for the business logic / query.
+
+*   Allow clients to send a remote procedure in a safe DSL so that the server can
+    interpret just what is allowed.
+
+*   Alternative to adding programming logic to a dumb data format like
+    JSON/YAML/XML when it started as a quick workaround at first, but then the
+    logic grows.
 
 # 🛠️ Installation
 
 ```shell
-npm install --save js-sexpr
+npm install --save s-expression.js
 ```
 
 <!-- 
@@ -72,11 +110,11 @@ npm install --save js-sexpr
   <img src="https://img.shields.io/badge/API%20Documentation-HTML-blue.svg" alt="API documentation link" height=30/>
 </a> -->
 
-See API documentation included below.
+See API documentation included at the last section.
 
 <p></p>
 
-# Test
+# 🧪 Test
 
 Run all test cases
 
@@ -84,27 +122,116 @@ Run all test cases
 npm run test
 ```
 
-Test a specific set of test cases
+Run a specific set of test cases
 
 ```shell
-npx tape ./tests/basic.js | npx tap-spec
+npx tape ./tests/parse.js | npx tap-spec
+
+npx tape ./tests/serialize.js | npx tap-spec
 
 npx tape ./tests/interpret.js | npx tap-spec
+
+npx tape ./tests/helpers.js | npx tap-spec
 ```
 
 Piping to `tap-spec` is optional, but it makes the output easier to read.
 
 # 🚀 Quick start
 
-TODO: simple parsing example and custom DSL example
+API documentation is embedded at the bottom for reference.
 
-Please look at the unit tests for use cases in the mean time.
+### `parse(str: string): Array< number | string | Array >`
 
-See API documentation for more reference.
+Turns a raw S-expression string into JSON that represents an abstract syntax tree in which:
+
+*   An expression is parsed as a JSON array
+*   A number is parsed as a JSON number
+*   A double-quoted string is parsed as a JSON string wrapped with literal double quotations, e.g. `"\"example string\""`
+    *   `S.valueOf("\"example string\"")` returns `"example string"` JSON string value
+*   A boolean (`true`, `false`, `#t`, `#f`) is parsed as a JSON string of the value, e.g. `"true"`
+    *   `S.valueOf("true")` returns `true` JSON boolean value
+    *   Tokens that indicate boolean values can be configured
+*   A null (`null`, `#nil`) is parsed as a JSON string of the null value, e.g. `"null"`
+    *   `S.valueOf("null")` returns `null` JSON value
+    *   Tokens that indicate null can be configured
+        *   Note: `undefined` is not configured, so it's parsed as a normal atom.
+*   Any other token is parsed as a JSON string of the identifier, e.g. `"a"`
+    *   `S.valueOf("a")` returns `"a"` JSON string value
+
+If the return is not an array (can check with `S.isExpression`), then it's invalid.
+
+<!-- You can change the defaults of what tokens mean null or boolean value. -->
+
+0.  **Initialize**
+
+```js
+const SExpr = require("s-expression.js")
+const S = new SExpr()
+```
+
+1.  **Simple parsing root S-expression as a list**
+
+```js
+S.parse(`(1 2 3)`) // [1, 2, 3]
+```
+
+2.  **Simple tree-walk on root expression with mixed value types**
+
+```js
+const ast = S.parse(`( 1 "a \\"b\\" c" true null d (e f ()) )`)
+
+if (S.isExpression(ast)) {
+    console.log(`ast is an expression: ${JSON.stringify(ast)}`)
+} else {    
+    throw Error(`ast is not a valid expression`)
+}
+
+let index = 0
+for (let e of ast) {
+  if (S.isNumber(e)) {
+        console.log(`ast[${index}] is a number with value: ${S.valueOf(e)}`)
+  } else if (S.isString(e)) {
+        console.log(`ast[${index}] is a string with value: ${JSON.stringify(S.valueOf(e))}`)
+  } else if (S.isBoolean(e)) {
+        console.log(`ast[${index}] is a boolean with value: ${S.valueOf(e)}`)
+  } else if (S.isNull(e)) {
+        console.log(`ast[${index}] is a null with value: ${S.valueOf(e)}`)
+  } else if (S.isAtom(e)) {
+        console.log(`ast[${index}] is an atom with id: ${S.valueOf(e)}`)
+  } else { // S.isExpression(e)
+        console.log(`ast[${index}] is an expression: ${JSON.stringify(e)}`)
+  }
+  index++
+}
+```
+
+Output:
+
+```clj
+ast is an expression: [1,"\"a \"b\" c\"","true","null","d",["e","f",[]]]
+ast[0] is a number with value: 1
+ast[1] is a string with value: "a \"b\" c"
+ast[2] is a boolean with value: true
+ast[3] is a null with value: null
+ast[4] is an atom with id: d
+ast[5] is an expression: ["e","f",[]]
+```
+
+See `./tests/parse.js` for more parsing examples
+
+## Serialize
+
+TODO
+
+Please look at the unit tests for use cases in the meantime.
+
+## Interpret
+
+TODO: simple custom DSL example
+
+Please look at the unit tests for use cases in the meantime.
 
 # 👋 Author
-
-<!-- ### 🏠🏗️ [Homepage](https://github.com/NLKNguyen/papercolor-theme) -->
 
 👤 **Nikyle Nguyen**
 
@@ -125,9 +252,9 @@ Contributions, issues and feature requests are welcome! Feel free to check [issu
 
 ## 🙇 Your support is very much appreciated
 
-I create open-source projects on GitHub and continue to develop/maintain as they are helping others. You can integrate and use these projects in your applications for free! You are free to modify and redistribute anyway you like, even in commercial products.
+I create open-source projects on GitHub and continue to develop/maintain them as they are helping others. You can integrate and use these projects in your applications for free! You are free to modify and redistribute any way you like, even in commercial products.
 
-I try to respond to users' feedback and feature requests as much as possible. Obviously, this takes a lot of time and efforts (speaking of mental context-switching between different projects and daily work). Therefore, if these projects help you in your work, and you want to encourage me to continue create, here are a few ways you can support me:
+I try to respond to users' feedback and feature requests as much as possible. This takes a lot of time and effort (speaking of mental context-switching between different projects and daily work). Therefore, if these projects help you in your work, and you want to support me to continue developing, here are a few ways you can support me:
 
 *   💬 Following my blog and social profiles listed above to help me connect with your network
 *   ⭐️ Starring this project and sharing with others as more users come, more great ideas arrive!
@@ -153,7 +280,7 @@ I try to respond to users' feedback and feature requests as much as possible. Ob
 
 Copyright © 2022 [Nikyle Nguyen](https://github.com/NLKNguyen)
 
-The project is [Unlicense License](https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE)
+The project is [Unlicense License](https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE) which is a permissive license similar to the spirit of MIT License.
 
 It is "a license with no conditions whatsoever which dedicates works to the public domain. Unlicensed works, modifications, and larger works may be distributed under different terms and without source code." This simply means that the project is free to use in any capacity without any warranty while reserving the rights for others to also freely do anything with it.
 
@@ -165,7 +292,6 @@ It is "a license with no conditions whatsoever which dedicates works to the publ
 
 *   [SExpr](#sexpr)
     *   [Parameters](#parameters)
-    *   [context](#context)
     *   [interpret](#interpret)
         *   [Parameters](#parameters-1)
     *   [stripComments](#stripcomments)
@@ -254,11 +380,6 @@ you can override.
 
 *   `options` **any**  (optional, default `{}`)
 
-### context
-
-Public field for programmers to store arbitrary data that might be useful
-for parsing expressions
-
 ### interpret
 
 interpret a parsed expression tree (AST) into data structures in according
@@ -278,11 +399,11 @@ Returns **any**
 
 ### stripComments
 
-strip comments from code in according to the lineCommentPrefixes setting
+strip comments from S-expression string
 
 #### Parameters
 
-*   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** code which might have line comments
+*   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** code which might have comments
 
 Returns **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** code without comments
 

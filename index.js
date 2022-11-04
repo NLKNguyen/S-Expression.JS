@@ -288,8 +288,8 @@ class SExpr {
   }
 
   /**
-   * strip comments from code in according to the lineCommentPrefixes setting
-   * @param {string} str code which might have line comments
+   * strip comments from S-expression string
+   * @param {string} str code which might have comments
    * @returns {string} code without comments
    */
   stripComments(str) {
