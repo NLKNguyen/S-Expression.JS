@@ -167,3 +167,5 @@ test("interpret method", async function (t) {
     console.log("---")
   }
 })
+
+// TODO: simple DSL: key value
