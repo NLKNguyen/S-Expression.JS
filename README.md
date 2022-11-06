@@ -68,7 +68,7 @@ S-Expression Parser, Serializer, Interpreter, and Tree Constructor / Walker Util
 
     *   JSON `array` and `object` types are used to represent function forms.
 
-**TL;DR**: jump to [Quick Start]() and hack away
+**TL;DR**: jump to [Quick Start](#-quick-start) and hack away
 
 # ⭐ Background
 
@@ -280,9 +280,10 @@ I try to respond to users' feedback and feature requests as much as possible. Th
 
 Copyright © 2022 [Nikyle Nguyen](https://github.com/NLKNguyen)
 
-The project is [Unlicense License](https://github.com/NLKNguyen/S-Expression.JS/blob/master/LICENSE) which is a permissive license similar to the spirit of MIT License.
+The project is [MIT License](https://github.com/NLKNguyen/code-formation/blob/master/LICENSE).
 
-It is "a license with no conditions whatsoever which dedicates works to the public domain. Unlicensed works, modifications, and larger works may be distributed under different terms and without source code." This simply means that the project is free to use in any capacity without any warranty while reserving the rights for others to also freely do anything with it.
+It is a simple permissive license with conditions only requiring the preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+
 
 # API
 

@@ -29,7 +29,7 @@
     "scheme"
   ],
   "author": "Nikyle Nguyen",
-  "license": "Unlicense",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/NLKNguyen/S-Expression.JS/issues"
   },
