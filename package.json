@@ -11,7 +11,8 @@
     "publish": "npm publish --access public",
     "test": "tape ./tests/*.js | tap-spec",
     "test-browser": "browserify ./tests/all.js | tap-closer | smokestack -b chrome | tap-spec",
-    "update-readme-api": "documentation readme index.js --section=API"    
+    "update-readme-api": "documentation readme index.js --section=API",
+    "process-readme": "code-formation --scan README.md"
   },
   "repository": {
     "type": "git",
