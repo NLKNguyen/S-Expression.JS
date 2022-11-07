@@ -285,6 +285,10 @@ The project is [MIT License](https://github.com/NLKNguyen/code-formation/blob/ma
 It is a simple permissive license with conditions only requiring the preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 
 <!-- 
+This snippet is used to transform the generated API markdown to include a divider
+It's idempotent, meaning that it can run multiple times but will not add more 
+dividers than necessary.
+
 // $<:AddDivider (LANGUAGE "nodejs")
 
 module.exports = async (context) => {
@@ -298,6 +302,9 @@ module.exports = async (context) => {
 }
 
 // $>
+
+The below blob instruction will transform the rest of this file with the snippet
+AddDivider to add minimum divider to make it easy to read.
 -->
 
 <!-- !API<:TRANSFORM (APPLY (AddDivider)) -->
