@@ -143,6 +143,14 @@ npx tape ./tests/helpers.js | npx tap-spec
 
 Piping to `tap-spec` is optional, but it makes the output easier to read.
 
+<!-- 
+# Publish
+
+```shell
+npm publish --access public
+```
+-->
+
 # 🚀 Quick start
 
 API documentation is embedded at the bottom for reference.
@@ -457,7 +465,7 @@ tree
 #### Parameters
 
 *   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** S-expression string
-*   `opts` **any** deserializing options (optional, default `{includedRootBrackets:true}`)
+*   `opts` **any** deserializing options (optional, default `{includedRootParentheses:true}`)
 
 Returns **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** an expression tree in form of list that can include nested
 lists similar to the structure of the input S-expression

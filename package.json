@@ -1,6 +1,6 @@
 {
   "name": "s-expression.js",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "S-Expression Parser, Serializer, and Tree Constructor / Walker Utilities in JavaScript for Browsers and Node.js",
   "main": "index.js",
   "files": [
@@ -8,7 +8,6 @@
     "LICENSE"
   ],
   "scripts": {
-    "publish": "npm publish --access public",
     "test": "tape ./tests/*.js | tap-spec",
     "test-browser": "browserify ./tests/all.js | tap-closer | smokestack -b chrome | tap-spec",
     "update-readme-api": "documentation readme index.js --section=API",

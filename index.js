@@ -311,14 +311,14 @@ class SExpr {
    * tree
    *
    * @param  {string} str S-expression string
-   * @param {*} [opts = { includedRootBrackets: true}] deserializing options
+   * @param {*} [opts = { includedRootParentheses: true}] deserializing options
    * @returns {json} an expression tree in form of list that can include nested
    * lists similar to the structure of the input S-expression
    * @ref improved on: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
-  parse(str, opts = { includedRootBrackets: true}) {
+  parse(str, opts = { includedRootParentheses: true}) {
     // TODO: consider handle try/catch here to report error message
-    if (!opts.includedRootBrackets) {
+    if (!opts.includedRootParentheses) {
       str = `(\n${str}\n)` // parsing logic requires 1 root expression
     }
     str = this.stripComments(str + "\n")

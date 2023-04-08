@@ -9,7 +9,7 @@ test("parse method", function (t) {
     {
       input: `( 1 "a \\"b\\" c" true null d (e f ()) )`,
       expect: [1, '"a "b" c"', "true", "null", "d", ["e", "f", []]],
-      opts: { includedRootBrackets: true }
+      opts: { includedRootParentheses: true }
     },
   ]
   t.plan(testCases.length)

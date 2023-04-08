@@ -10,7 +10,7 @@ test("interpret method", async function (t) {
     {
       note: "root list",
       input: "(a b c)",
-      parsingOpts: { includedRootBrackets: true },
+      parsingOpts: { includedRootParentheses: true },
       expect: {
         [S.ROOT]: [
           {
@@ -27,7 +27,7 @@ test("interpret method", async function (t) {
     },
     {
       input: "((a b c))",
-      parsingOpts: { includedRootBrackets: true },
+      parsingOpts: { includedRootParentheses: true },
       expect: {
         [S.ROOT]: [
           {
@@ -60,7 +60,7 @@ test("interpret method", async function (t) {
     // },
     {
       input: "((a b c) (d e f))",
-      parsingOpts: { includedRootBrackets: true },
+      parsingOpts: { includedRootParentheses: true },
       expect: {
         [S.ROOT]: [
           {
@@ -88,7 +88,7 @@ test("interpret method", async function (t) {
     },
     {
       input: "(a (b c d) e (f) () (g h))",
-      parsingOpts: { includedRootBrackets: true },
+      parsingOpts: { includedRootParentheses: true },
       expect: {
         [S.ROOT]: [
           {
@@ -124,7 +124,7 @@ test("interpret method", async function (t) {
     {
       note: "multiline string",
       input: '(a "multi\n line\n string")',
-      parsingOpts: { includedRootBrackets: true },
+      parsingOpts: { includedRootParentheses: true },
       expect: {
         [S.ROOT]: [
           {
@@ -137,7 +137,7 @@ test("interpret method", async function (t) {
     {
       note: "multiline string with escaped quotes",
       input: `(a "multi\n line\n  string \\"with \nquotes\\"")`,
-      parsingOpts: { includedRootBrackets: true },
+      parsingOpts: { includedRootParentheses: true },
       expect: {
         [S.ROOT]: [
           {
@@ -166,7 +166,7 @@ test("interpret method", async function (t) {
           )
         )
       )`,
-      parsingOpts: { includedRootBrackets: true },
+      parsingOpts: { includedRootParentheses: true },
       expect: {
         "[ ROOT ]": [
           {
