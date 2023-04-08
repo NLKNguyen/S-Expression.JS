@@ -1,6 +1,6 @@
 {
   "name": "s-expression.js",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "S-Expression Parser, Serializer, and Tree Constructor / Walker Utilities in JavaScript for Browsers and Node.js",
   "main": "index.js",
   "files": [
@@ -37,6 +37,7 @@
   "homepage": "https://github.com/NLKNguyen/S-Expression.JS",
   "devDependencies": {
     "browserify": "^17.0.0",
+    "code-formation": "^0.6.2",
     "documentation": "^13.2.5",
     "faucet": "0.0.1",
     "json-colorizer": "^2.2.2",

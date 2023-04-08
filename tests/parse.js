@@ -9,6 +9,7 @@ test("parse method", function (t) {
     {
       input: `( 1 "a \\"b\\" c" true null d (e f ()) )`,
       expect: [1, '"a "b" c"', "true", "null", "d", ["e", "f", []]],
+      opts: { includedRootBrackets: true }
     },
   ]
   t.plan(testCases.length)
@@ -16,16 +17,16 @@ test("parse method", function (t) {
     if (testCase.note) {
       console.log("Note   : " + testCase.note)
     }
-    let input = testCase.input
+    const input = testCase.input
     console.log(`Input  : ${colorize(JSON.stringify(input))}`)
 
-    let expect = testCase.expect
+    const expect = testCase.expect
     console.log(`Expect : ${colorize(JSON.stringify(expect))}`)
 
-    
-    let ast = S.parse(input)
+    const opts = testCase.opts
+    let ast = S.parse(input, opts)
 
-    let output = ast
+    const output = ast
     console.log(
       "Output : " +
         colorize(output, {
@@ -77,3 +78,4 @@ test("parse method", function (t) {
     console.log()
   }
 })
+

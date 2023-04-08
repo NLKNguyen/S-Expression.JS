@@ -6,16 +6,16 @@ const SExpr = require("../index")
 test("parse method", function (t) {
   const S = new SExpr()
   t.plan(2)
-  t.deepEqual(S.parse("(1 2 3)"), [1, 2, 3])
-  t.deepEqual(S.parse('(a 1 "cd ef ( )")'), ["a", 1, '"cd ef ( )"'])  
+  t.deepEqual(S.parse("(1 2 3)", { includedRootBrackets: true }), [1, 2, 3])
+  t.deepEqual(S.parse('(a 1 "cd ef ( )")', { includedRootBrackets: true }), ["a", 1, '"cd ef ( )"'])  
 })
 
 // -----------------------------------------------------------------------------
 test("serialize method", async function (t) {
   t.plan(3)
   const S = new SExpr()
-  t.deepEqual(S.serialize([1, 2, 3]), "(1 2 3)")
-  t.deepEqual(S.serialize(["a", 1, '"cd ef ( )"']), '(a 1 "cd ef ( )")')
+  t.deepEqual(S.serialize([1, 2, 3], { includingRootParentheses: true }), "(1 2 3)")
+  t.deepEqual(S.serialize(["a", 1, '"cd ef ( )"'], { includingRootParentheses: true }), '(a 1 "cd ef ( )")')
 
   const input = `
 (
@@ -35,7 +35,7 @@ test("serialize method", async function (t) {
 )
 
 `
-  let originalAst = S.parse(input)
+  let originalAst = S.parse(input, { includedRootBrackets: true })
 
   // console.log(
   //   colorize(originalAst, {
@@ -43,10 +43,10 @@ test("serialize method", async function (t) {
   //   })
   // )
 
-  let serialized = S.serialize(originalAst)
+  let serialized = S.serialize(originalAst, { includingRootParentheses: true })
   // console.log("serialized: " + serialized)
 
-  let recreatedAst = S.parse(serialized)
+  let recreatedAst = S.parse(serialized, { includedRootBrackets: true })
   // console.log(recreatedAst)
 
   t.deepEquals(originalAst, recreatedAst)

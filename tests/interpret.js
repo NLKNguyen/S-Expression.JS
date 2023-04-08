@@ -10,6 +10,7 @@ test("interpret method", async function (t) {
     {
       note: "root list",
       input: "(a b c)",
+      parsingOpts: { includedRootBrackets: true },
       expect: {
         [S.ROOT]: [
           {
@@ -26,6 +27,7 @@ test("interpret method", async function (t) {
     },
     {
       input: "((a b c))",
+      parsingOpts: { includedRootBrackets: true },
       expect: {
         [S.ROOT]: [
           {
@@ -58,6 +60,7 @@ test("interpret method", async function (t) {
     // },
     {
       input: "((a b c) (d e f))",
+      parsingOpts: { includedRootBrackets: true },
       expect: {
         [S.ROOT]: [
           {
@@ -85,6 +88,7 @@ test("interpret method", async function (t) {
     },
     {
       input: "(a (b c d) e (f) () (g h))",
+      parsingOpts: { includedRootBrackets: true },
       expect: {
         [S.ROOT]: [
           {
@@ -120,6 +124,7 @@ test("interpret method", async function (t) {
     {
       note: "multiline string",
       input: '(a "multi\n line\n string")',
+      parsingOpts: { includedRootBrackets: true },
       expect: {
         [S.ROOT]: [
           {
@@ -132,6 +137,7 @@ test("interpret method", async function (t) {
     {
       note: "multiline string with escaped quotes",
       input: `(a "multi\n line\n  string \\"with \nquotes\\"")`,
+      parsingOpts: { includedRootBrackets: true },
       expect: {
         [S.ROOT]: [
           {
@@ -141,18 +147,59 @@ test("interpret method", async function (t) {
         ],
       },
     },
+    {
+      note: "escape interpreting by switching off notation",
+      context: {
+        handlers: {
+          QUOTE: {
+            notation: null,
+          },
+        },
+      },
+      input: `(
+        (quote 
+          (
+            some expressions to be retained as-is
+          )
+          (
+            and not be interpreted as function notation
+          )
+        )
+      )`,
+      parsingOpts: { includedRootBrackets: true },
+      expect: {
+        "[ ROOT ]": [
+          {
+            quote: [
+              ["some", "expressions", "to", "be", "retained", "as-is"],
+              ["and", "not", "be", "interpreted", "as", "function", "notation"],
+            ],
+          },
+        ],
+      },
+    },
   ]
   t.plan(testCases.length)
   for (let testCase of testCases) {
     if (testCase.note) {
       console.log("Test   : " + testCase.note)
     }
-    let input = testCase.input
+    const input = testCase.input
     console.log("Input  : " + JSON.stringify(input))
 
-    let ast = S.parse(input)
+    const parsingOpts = testCase.parsingOpts
+    const ast = S.parse(input, parsingOpts)
     // console.dir(ast)
-    let output = await S.interpret(ast)
+
+    const context = testCase.context || {}
+    if (testCase.context) {
+      console.dir({
+        "testCase.context": testCase.context,
+        context,
+      })
+      // process.exit()
+    }
+    const output = await S.interpret(ast, context)
     console.log(
       "Output : " +
         colorize(output, {
@@ -160,7 +207,7 @@ test("interpret method", async function (t) {
         })
     )
 
-    let expect = testCase.expect
+    const expect = testCase.expect
     console.log("Expect : " + JSON.stringify(expect))
 
     t.deepEqual(output, expect)

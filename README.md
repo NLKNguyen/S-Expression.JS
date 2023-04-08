@@ -101,18 +101,27 @@ All usual reasons for DSLs apply. Here are just a few use cases:
 
 # 🛠️ Installation
 
+**Option 1: install latest release on NPM to your Node.js project**
+
 ```shell
 npm install --save s-expression.js
 ```
 
-<!-- 
-<a href="https://js-sexpr.dephony.com/" title="Read API documentation">
-  <img src="https://img.shields.io/badge/API%20Documentation-HTML-blue.svg" alt="API documentation link" height=30/>
-</a> -->
+**Option 2: install from this repository source code**
 
-See API documentation included at the last section.
+```shell
+git clone https://github.com/NLKNguyen/S-Expression.JS
 
-<p></p>
+cd S-Expression.JS
+
+# make it globally available on your machine; to undo: npm unlink
+npm link
+
+# then from your own project directory, make a link to this library; similarly to undo: npm unlink s-expression.js
+npm link s-expression.js
+
+# you can now require it in your JS source just like normal, e.g. const SExpr = require("s-expression.js")
+```
 
 # 🧪 Test
 
@@ -126,8 +135,6 @@ Run a specific set of test cases
 
 ```shell
 npx tape ./tests/parse.js | npx tap-spec
-
-npx tape ./tests/serialize.js | npx tap-spec
 
 npx tape ./tests/interpret.js | npx tap-spec
 
@@ -450,6 +457,7 @@ tree
 #### Parameters
 
 *   `str` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** S-expression string
+*   `opts` **any** deserializing options (optional, default `{includedRootBrackets:true}`)
 
 Returns **[json](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/JSON)** an expression tree in form of list that can include nested
 lists similar to the structure of the input S-expression
@@ -462,8 +470,8 @@ Serialize an expression tree into an S-expression string
 
 #### Parameters
 
-*   `ast` **any** 
-*   `opts`   (optional, default `{rootBrackets:true}`)
+*   `ast` **any** parsed expression (abstract syntax tree)
+*   `opts` **any** serializing options (optional, default `{includingRootParentheses:true}`)
 *   `level`   (optional, default `0`)
 
 Returns **any** 

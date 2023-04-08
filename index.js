@@ -153,7 +153,7 @@ class SExpr {
     }
 
     if (context.notation === null) {
-      return expression
+      return { [entity]: expression }
     }
 
     // if (!context.notation || context.notation === "functional") {
@@ -175,7 +175,7 @@ class SExpr {
               handler,
               this.FUNCTION
             )
-
+            
             if (handlerContext.defaults === undefined) {
               handlerContext.defaults = context.defaults
             }
@@ -311,11 +311,16 @@ class SExpr {
    * tree
    *
    * @param  {string} str S-expression string
+   * @param {*} [opts = { includedRootBrackets: true}] deserializing options
    * @returns {json} an expression tree in form of list that can include nested
    * lists similar to the structure of the input S-expression
    * @ref improved on: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
-  parse(str) {
+  parse(str, opts = { includedRootBrackets: true}) {
+    // TODO: consider handle try/catch here to report error message
+    if (!opts.includedRootBrackets) {
+      str = `(\n${str}\n)` // parsing logic requires 1 root expression
+    }
     str = this.stripComments(str + "\n")
     // const t = str.match(/\s*("[^"]*"|\(|\)|"|[^\s()"]+)/g)
     const t = str.match(/\s*("[^"\\]*(?:\\[\s\S][^"\\]*)*"|\(|\)|"|[^\s()"]+)/g)
@@ -347,10 +352,12 @@ class SExpr {
   /**
    * Serialize an expression tree into an S-expression string
    *
-   * @param {*} ast
+   * @param {*} ast parsed expression (abstract syntax tree)
+   * @param {*} [opts = { includingRootParentheses: true }] serializing options
    * @return {*}
    */
-  serialize(ast, opts = { rootBrackets: true }, level = 0) {
+  serialize(ast, opts = { includingRootParentheses: true }, level = 0) {
+    // TODO: add pretty option for indentation
     let forms = []
     for (let e of ast) {
       if (this.isExpression(e)) {
@@ -359,7 +366,7 @@ class SExpr {
         forms.push(e)
       }
     }
-    if (level === 0 && !opts.rootBrackets) {
+    if (level === 0 && !opts.includingRootParentheses) {
       return forms.join(" ")
     } else {
       return `(${forms.join(" ")})`
