@@ -298,8 +298,10 @@ class SExpr {
         t[i] =
           "'" +
           ti
+            .replaceAll("\\", "\\\\")
             .replaceAll("\r", "\\r")
             .replaceAll("\n", "\\n")
+            .replaceAll("\t", "\\t")
             .replaceAll("'", "\\'") +
           "'"
       if (i > 0 && ti != "]" && t[i - 1].trim() != "(") t.splice(i, 0, ",")

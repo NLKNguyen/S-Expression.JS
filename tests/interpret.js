@@ -1,4 +1,5 @@
 const test = require("tape")
+const util = require("util")
 const colorize = require("json-colorizer")
 const _ = require("lodash")
 const SExpr = require("../index")
@@ -136,14 +137,14 @@ test("interpret method", async function (t) {
     },
     {
       note: "multiline string with escaped quotes",
-      input: `(a "multi\n line\n  string \\"with \nquotes\\"")`,
+      input: '(a "multi\n line\n  string \\"with \nquotes\\"")',
       parsingOpts: { includedRootParentheses: true },
       expect: {
-        [S.ROOT]: [
+        "[ ROOT ]": [
           {
-            [S.ATOM]: "a",
+            "[ ATOM ]": "a",
           },
-          'multi\n line\n  string "with \nquotes"',
+          'multi\n line\n  string \\"with \nquotes\\"',
         ],
       },
     },
@@ -196,13 +197,13 @@ test("interpret method", async function (t) {
     // console.dir(ast)
 
     const context = testCase.context || {}
-    if (testCase.context) {
-      console.dir({
-        "testCase.context": testCase.context,
-        context,
-      })
-      // process.exit()
-    }
+    // if (testCase.context) {
+    //   console.dir({
+    //     "testCase.context": testCase.context,
+    //     context,
+    //   })
+    //   // process.exit()
+    // }
     const output = await S.interpret(ast, context)
     console.log(
       "Output : " +
@@ -210,6 +211,7 @@ test("interpret method", async function (t) {
           pretty: true,
         })
     )
+    // console.log(util.inspect(output, {showHidden: false, depth: null, colors: true}))
 
     const expect = testCase.expect
     console.log("Expect : " + JSON.stringify(expect))

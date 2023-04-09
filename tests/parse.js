@@ -7,9 +7,9 @@ test("parse method", function (t) {
   const S = new SExpr()
   let testCases = [
     {
-      input: `( 1 "a \\"b\\" c" true null d (e f ()) )`,
-      expect: [1, '"a "b" c"', "true", "null", "d", ["e", "f", []]],
-      opts: { includedRootParentheses: true }
+      input: '( 1 "a \\"b\\" c" true null d (e f ()) )',
+      expect: [1, '"a \\"b\\" c"', "true", "null", "d", ["e", "f", []]],
+      opts: { includedRootParentheses: true },
     },
   ]
   t.plan(testCases.length)
@@ -35,7 +35,7 @@ test("parse method", function (t) {
     )
 
     console.log(`---`)
-    
+
     if (S.isExpression(ast)) {
       console.log(`ast is an expression: ${colorize(JSON.stringify(ast))}`)
     } else {
@@ -78,4 +78,3 @@ test("parse method", function (t) {
     console.log()
   }
 })
-

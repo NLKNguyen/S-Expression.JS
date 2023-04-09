@@ -143,7 +143,7 @@ npx tape ./tests/helpers.js | npx tap-spec
 
 Piping to `tap-spec` is optional, but it makes the output easier to read.
 
-<!-- 
+<!--
 # Publish
 
 ```shell
@@ -152,9 +152,11 @@ npm publish --access public
 
 # Mark release tag
 
+Use IDE to mark tag. Then push to repos:
+
 ```shell
+git push origin {tag_name}
 ```
-git push {tag_name}
 -->
 
 # 🚀 Quick start
@@ -203,7 +205,7 @@ const ast = S.parse(`( 1 "a \\"b\\" c" true null d (e f ()) )`)
 
 if (S.isExpression(ast)) {
     console.log(`ast is an expression: ${JSON.stringify(ast)}`)
-} else {    
+} else {
     throw Error(`ast is not a valid expression`)
 }
 
@@ -229,11 +231,11 @@ for (let e of ast) {
 Output:
 
 ```clj
-ast is an expression: [1,"\"a \"b\" c\"","true","null","d",["e","f",[]]]
+ast is an expression: [1,"\"a \\\"b\\\" c\"","true","null","d",["e","f",[]]]
 ast[0] is a number with value: 1
-ast[1] is a string with value: "a \"b\" c"
+ast[1] is a string with value: "a \\\"b\\\" c"
 ast[2] is a boolean with value: true
-ast[3] is a null with value: null
+ast[3] is null: null
 ast[4] is an atom with id: d
 ast[5] is an expression: ["e","f",[]]
 ```
@@ -305,16 +307,16 @@ The project is [MIT License](https://github.com/NLKNguyen/code-formation/blob/ma
 
 It is a simple permissive license with conditions only requiring the preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
 
-<!-- 
+<!--
 This snippet is used to transform the generated API markdown to include a divider
-It's idempotent, meaning that it can run multiple times but will not add more 
+It's idempotent, meaning that it can run multiple times but will not add more
 dividers than necessary.
 
 // $<:AddDivider (LANGUAGE "nodejs")
 
 module.exports = async (context) => {
   const regex = /(?<!---)(\r?\n\r?\n)(###\s)/gm
-  /* 
+  /*
     if matched, (\r?\n\r?\n) => $1
                 (###\s) => $2
   */
@@ -440,13 +442,13 @@ to LISP dialects such as CLIPS, Clojure, Scheme, Racket, etc.
 
 #### Parameters
 
-*   `expression`  
+*   `expression`
 *   `context`   (optional, default `{}`)
 *   `state`   (optional, default `{scoped:[],globals:{}}`)
 *   `entity`   (optional, default `this.ROOT`)
-*   `E` **any** 
+*   `E` **any**
 
-Returns **any** 
+Returns **any**
 
 ---
 
@@ -487,7 +489,7 @@ Serialize an expression tree into an S-expression string
 *   `opts` **any** serializing options (optional, default `{includingRootParentheses:true}`)
 *   `level`   (optional, default `0`)
 
-Returns **any** 
+Returns **any**
 
 ---
 
@@ -497,7 +499,7 @@ Create an identifier symbol
 
 #### Parameters
 
-*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+*   `id` **[string](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)**
 
 #### Examples
 
