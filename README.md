@@ -149,6 +149,12 @@ Piping to `tap-spec` is optional, but it makes the output easier to read.
 ```shell
 npm publish --access public
 ```
+
+# Mark release tag
+
+```shell
+```
+git push {tag_name}
 -->
 
 # 🚀 Quick start
@@ -429,9 +435,8 @@ you can override.
 ### interpret
 
 interpret a parsed expression tree (AST) into data structures in according
-to a method of defaultMode. The current available method is using
-"functional" notation similar to LISP dialects such as CLIPS, Clojure,
-Scheme, Racket, etc.
+to a notation type, currently just "functional" notation which is similar
+to LISP dialects such as CLIPS, Clojure, Scheme, Racket, etc.
 
 #### Parameters
 

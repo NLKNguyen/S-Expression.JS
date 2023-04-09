@@ -153,6 +153,10 @@ test("interpret method", async function (t) {
         handlers: {
           QUOTE: {
             notation: null,
+            evaluate: async (components, context, state, entity) => {
+              // similar to the default [S.Function] evaluate
+              return { [entity]: components }
+            },
           },
         },
       },

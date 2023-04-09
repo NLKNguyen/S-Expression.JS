@@ -1,6 +1,6 @@
 {
   "name": "s-expression.js",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "S-Expression Parser, Serializer, and Tree Constructor / Walker Utilities in JavaScript for Browsers and Node.js",
   "main": "index.js",
   "files": [

@@ -19,23 +19,6 @@ class SExpr {
   logVerbose = null
   logTrace = null
 
-  // defaultMode = {
-  //   notation: "functional",
-  //   normalizeAtom: (e) => e.toUpperCase(), // or null
-
-  //   //unwrap_list_with_single_atom: false,
-  //   // atom_as_string: false,
-  //   // right_associations: ["'"],
-  //   // entitys: {
-  //   //   "'": {
-  //   //     notation: null,
-  //   //     transform: (components) => components,
-  //   //     apply: (components) => components
-  //   //   },
-  //   // },
-  //   // apply: (components) => components,
-  // }
-
   Type = {
     Atom: null,
   }
@@ -61,8 +44,6 @@ class SExpr {
 
     this.nully = ["null", "#nil"] // => null
     this.nully = options.nully || this.nully
-
-    // this.defaultMode = options.defaultMode || this.defaultMode
 
     this.ATOM = "[ ATOM ]"
     this.BOOLEAN = "[ BOOLEAN ]"
@@ -134,9 +115,8 @@ class SExpr {
 
   /**
    * interpret a parsed expression tree (AST) into data structures in according
-   * to a method of defaultMode. The current available method is using
-   * "functional" notation similar to LISP dialects such as CLIPS, Clojure,
-   * Scheme, Racket, etc.
+   * to a notation type, currently just "functional" notation which is similar
+   * to LISP dialects such as CLIPS, Clojure, Scheme, Racket, etc.
    *
    * @param {*} E
    * @return {*}
@@ -152,13 +132,9 @@ class SExpr {
       context.defaults = this.defaults
     }
 
-    if (context.notation === null) {
-      return { [entity]: expression }
-    }
+    let components = []
 
-    // if (!context.notation || context.notation === "functional") {
-    if (context.notation === undefined) {
-      const components = []
+    if (context.notation === undefined || context.notation === "functional") {
       for (let e of expression) {
         if (this.isExpression(e)) {
           const entity = this.first(e)
@@ -175,7 +151,7 @@ class SExpr {
               handler,
               this.FUNCTION
             )
-            
+
             if (handlerContext.defaults === undefined) {
               handlerContext.defaults = context.defaults
             }
@@ -249,41 +225,26 @@ class SExpr {
           // components.push({ [key]: this.valueOf(e) }) // normal form / self evaluated, e.g. string, number, boolean
         }
       }
-
-      if (context.evaluate) {
-        // console.dir({
-        //   entity,
-        //   components,
-        // })
-        // console.dir(components)
-
-        return await context.evaluate(components, context, state, entity)
-      } else {
-        // console.dir({
-        //   entity,
-        //   components,
-        // })
-        const handlerContext = this.findContext(context, entity, this.FUNCTION)
-
-        if (handlerContext.evaluate) {
-          // let entity = {[entity]: components}
-          // console.log(defaultMode.evaluate.toString())
-          return await handlerContext.evaluate(
-            components,
-            context,
-            state,
-            entity
-          )
-        } else {
-          throw new Error(
-            `can't evaluate '${entity}' with arguments ${JSON.stringify(
-              components
-            )}`
-          )
-        }
-      }
+    } else if (context.notation === null) {
+      components = expression
     } else {
       throw new Error("unsupported notation: " + context.notation)
+    }
+
+    if (context.evaluate) {
+      return await context.evaluate(components, context, state, entity)
+    } else {
+      const handlerContext = this.findContext(context, entity, this.FUNCTION)
+
+      if (handlerContext.evaluate) {
+        return await handlerContext.evaluate(components, context, state, entity)
+      } else {
+        throw new Error(
+          `can't evaluate '${entity}' with arguments ${JSON.stringify(
+            components
+          )}`
+        )
+      }
     }
   }
 
@@ -311,12 +272,12 @@ class SExpr {
    * tree
    *
    * @param  {string} str S-expression string
-   * @param {*} [opts = { includedRootParentheses: true}] deserializing options
+   * @param {*} [opts = { includedRootParentheses: true }] deserializing options
    * @returns {json} an expression tree in form of list that can include nested
    * lists similar to the structure of the input S-expression
    * @ref improved on: https://rosettacode.org/wiki/S-expressions#JavaScript
    */
-  parse(str, opts = { includedRootParentheses: true}) {
+  parse(str, opts = { includedRootParentheses: true }) {
     // TODO: consider handle try/catch here to report error message
     if (!opts.includedRootParentheses) {
       str = `(\n${str}\n)` // parsing logic requires 1 root expression
