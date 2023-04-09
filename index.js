@@ -299,9 +299,9 @@ class SExpr {
           "'" +
           ti
             .replaceAll("\\", "\\\\")
-            .replaceAll("\r", "\\r")
-            .replaceAll("\n", "\\n")
-            .replaceAll("\t", "\\t")
+            .replaceAll("\r", "\\\\r")
+            .replaceAll("\n", "\\\\n")
+            .replaceAll("\t", "\\\\t")
             .replaceAll("'", "\\'") +
           "'"
       if (i > 0 && ti != "]" && t[i - 1].trim() != "(") t.splice(i, 0, ",")
@@ -599,7 +599,10 @@ class SExpr {
     if (typeof e === "string" || e instanceof String) {
       // maybe quoted string
       if (e[0] === '"') {
-        return e.slice(1, e.length - 1)
+        // return e.slice(1, e.length - 1)  
+        // console.log(e)  
+        // console.log(JSON.parse(e))      
+        return JSON.parse(e)
       }
 
       // maybe null

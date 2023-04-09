@@ -137,14 +137,12 @@ test("interpret method", async function (t) {
     },
     {
       note: "multiline string with escaped quotes",
-      input: '(a "multi\n line\n  string \\"with \nquotes\\"")',
+      input: '(a "multi\n line\n  string \\"with quotes\\"")',
       parsingOpts: { includedRootParentheses: true },
       expect: {
         "[ ROOT ]": [
-          {
-            "[ ATOM ]": "a",
-          },
-          'multi\n line\n  string \\"with \nquotes\\"',
+          { "[ ATOM ]": "a" },
+          'multi\n line\n  string "with quotes"',
         ],
       },
     },
